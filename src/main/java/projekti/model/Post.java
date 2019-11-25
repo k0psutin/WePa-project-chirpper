@@ -9,7 +9,6 @@ import org.springframework.data.jpa.domain.AbstractPersistable;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@EqualsAndHashCode(callSuper = false)
 public class Post extends AbstractPersistable<Long> {
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -25,5 +24,5 @@ public class Post extends AbstractPersistable<Long> {
     private List<Account> likes = new ArrayList<>();
 
     @OneToMany(mappedBy = "post")
-    private List<Comment> comment = new ArrayList<>();
+    private List<PostComment> comment = new ArrayList<>();
 }

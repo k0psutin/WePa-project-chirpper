@@ -8,7 +8,6 @@ import org.springframework.data.jpa.domain.AbstractPersistable;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@EqualsAndHashCode(callSuper = false)
 public class PhotoComment extends AbstractPersistable<Long> {
     private String content;
     private String time;

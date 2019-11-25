@@ -1,15 +1,15 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
-    <head>
-        <meta charset="UTF-8" />
-        <title></title>
-    </head>
-    <body>
-        <p th:each="post : ${user.post}">
-            <span th:text="${post.content}"></span>
-            <span th:each="comment : ${post.comment}">
-                <span th:text="${comment.content}"></span>
-            </span>
-        </p>
-    </body>
+  <head>
+    <meta charset="UTF-8" />
+    <title></title>
+  </head>
+  <body>
+    <p th:each="post : ${user.post}">
+      <span th:text="${post.content}"></span>
+      <span th:each="comment : ${post.comment}">
+        <span th:text="${comment.content}"></span>
+      </span>
+    </p>
+  </body>
 </html>

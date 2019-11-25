@@ -1,11 +1,12 @@
 package projekti.service;
 
-import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import projekti.model.Account;
-import projekti.repository.AccountRepository;
+import projekti.model.*;
+import projekti.repository.*;
 
 @Service
 public class AccountService {
@@ -15,6 +16,16 @@ public class AccountService {
 
     public Account getAccount(String username) {
         return accountRepository.findByUsername(username);
+    }
+
+    public Account getCurrentUser() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String currentUser = auth.getName();
+        return getAccount(currentUser);
+    }
+
+    public void saveAccount(Account acc) {
+        accountRepository.save(acc);
     }
 
     public Account changeAvatar(String username, Long id) {

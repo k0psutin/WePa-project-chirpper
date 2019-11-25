@@ -5,25 +5,23 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import projekti.model.Comment;
-import projekti.model.Post;
-import projekti.repository.CommentRepository;
-import projekti.repository.PostRepository;
+import projekti.model.*;
+import projekti.repository.*;
 
 @Service
 public class CommentService {
 
         @Autowired
-        private CommentRepository commentRepository;
+        private PostCommentRepository commentRepository;
 
         @Autowired
         private PostRepository postRepository;
 
-        public void createComment(Long id, String comment, String user) {
+        public void createComment(Long id, String comment, Account user) {
                 if (comment.length() == 0) {
                         return;
                 }
-                Comment cmt = new Comment();
+                PostComment cmt = new PostComment();
                 Post post = postRepository.getOne(id);
 
                 cmt.setContent(comment);
@@ -31,7 +29,7 @@ public class CommentService {
                 DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("dd-MM-yyyy");
                 cmt.setTime(LocalTime.now().format(formatter));
                 cmt.setDate(LocalDate.now().format(formatter2));
-                cmt.setUsername(user);
+                cmt.setUser(user);
                 cmt.setPost(post);
                 post.getComment().add(cmt);
 

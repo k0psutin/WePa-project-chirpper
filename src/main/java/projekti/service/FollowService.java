@@ -5,10 +5,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import projekti.model.*;
 import projekti.repository.*;
@@ -22,10 +19,8 @@ public class FollowService {
     @Autowired
     private AccountService accountService;
 
-    public void requestFollow(String user) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String currentUser = auth.getName();
-        Account current = accountService.getAccount(currentUser);
+    public void followUser(String user) {
+        Account current = accountService.getCurrentUser();
         Account toFollow = accountService.getAccount(user);
 
         List<Follow> follows = followRepository.findByUserAndFollowing(current, toFollow);
@@ -35,13 +30,15 @@ public class FollowService {
 
         Boolean ifUserMatch = follows.stream()
                 .anyMatch(follow -> follow.getUser().equals(current) && follow.getFollowing().equals(toFollow));
-        Boolean ifFollowerMatch = follows.stream()
-                .anyMatch(follow -> follow.getUser().equals(toFollow) && follow.getFollowing().equals(current));
+        // Boolean ifFollowerMatch = follows.stream()
+        // .anyMatch(follow -> follow.getUser().equals(toFollow) &&
+        // follow.getFollowing().equals(current));
 
-        System.out.println("ifUserMatch: " + ifUserMatch + " ifFollowerMatch: " + ifFollowerMatch);
+        // System.out.println("ifUserMatch: " + ifUserMatch + " ifFollowerMatch: " +
+        // ifFollowerMatch);
 
         // Jos ifUserMatch ja ifFollowerMatch molemmat on false, niin lisätään uusi..
-        if (!ifUserMatch && !ifFollowerMatch) {
+        if (!ifUserMatch) {
             Follow follow = new Follow();
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
             DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("dd-MM-yyyy");
@@ -49,9 +46,34 @@ public class FollowService {
             follow.setDate(LocalDate.now().format(formatter2));
             follow.setFollowing(toFollow);
             follow.setUser(current);
+            follow.setBlocked(false);
 
             followRepository.save(follow);
         } else
             System.out.println("Ei lisätä, löytyy jo");
+    }
+
+    public List<Follow> getFollows() {
+        return followRepository.findAllByUser(accountService.getCurrentUser());
+    }
+
+    public List<Follow> getFollowByOrder() {
+        return followRepository.findAllByUserOrderByDate(accountService.getCurrentUser());
+    }
+
+    public void blockFollower(String follower) {
+        Account current = accountService.getCurrentUser();
+        Account followerUser = accountService.getAccount(follower);
+
+        List<Follow> follows = followRepository.findByUserAndFollowing(current, followerUser);
+
+        Follow followerMatch = follows.stream()
+                .filter(follow -> follow.getUser().equals(followerUser) && follow.getFollowing().equals(current))
+                .findFirst().get();
+
+        if (!followerMatch.getBlocked()) {
+            followerMatch.setBlocked(true);
+            followRepository.save(followerMatch);
+        }
     }
 }

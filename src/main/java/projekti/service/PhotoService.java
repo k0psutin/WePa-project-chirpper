@@ -17,7 +17,7 @@ public class PhotoService {
     private PhotoRepository photoRepository;
 
     @Autowired
-    private AccountRepository accountRepository;
+    private AccountService accountService;
 
     public List<Photo> getPhotos(String username) {
         return photoRepository.findAllByAccountUsername(username);
@@ -29,9 +29,7 @@ public class PhotoService {
 
     public void likeAImg(Long id) {
         Photo photo = photoRepository.getOne(id);
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String username = auth.getName();
-        Account acc = accountRepository.findByUsername(username);
+        Account acc = accountService.getCurrentUser();
         if (!photo.getLikes().contains(acc)) {
             photo.getLikes().add(acc);
             photoRepository.save(photo);
@@ -39,7 +37,7 @@ public class PhotoService {
     }
 
     public boolean uploadPhoto(String username, String story, MultipartFile file) throws IOException {
-        Account acc = accountRepository.findByUsername(username);
+        Account acc = accountService.getAccount(username);
         if (!file.getContentType().contains("image") || file.getSize() == 0 || acc.getPost().size() <= 10) {
             return false;
         }
@@ -49,7 +47,7 @@ public class PhotoService {
         acc.getPhoto().add(photo);
         photo.setAccount(acc);
         photoRepository.save(photo);
-        accountRepository.save(acc);
+        accountService.saveAccount(acc);
         return true;
     }
 }

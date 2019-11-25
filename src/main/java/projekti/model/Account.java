@@ -10,7 +10,6 @@ import org.springframework.data.jpa.domain.AbstractPersistable;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@EqualsAndHashCode(callSuper = false)
 public class Account extends AbstractPersistable<Long> {
 
     @Column(unique = true)

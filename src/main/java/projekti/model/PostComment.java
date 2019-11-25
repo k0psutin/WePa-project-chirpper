@@ -8,13 +8,15 @@ import org.springframework.data.jpa.domain.AbstractPersistable;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@EqualsAndHashCode(callSuper = false)
-public class Comment extends AbstractPersistable<Long> {
+public class PostComment extends AbstractPersistable<Long> {
 
     private String content;
     private String time;
     private String date;
-    private String username;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private Account user;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id")

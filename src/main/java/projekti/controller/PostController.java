@@ -6,6 +6,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import projekti.repository.AccountRepository;
+import projekti.model.*;
 import projekti.service.*;
 
 @Controller
@@ -37,8 +40,7 @@ public class PostController {
     @PostMapping("/profile/{username}/post/{id}/comment")
     public String addComment(Model model, @PathVariable String username, @PathVariable Long id,
             @RequestParam String comment) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String user = auth.getName();
+        Account user = accountService.getCurrentUser();
         commentService.createComment(id, comment, user);
         model.addAttribute("user", accountService.getAccount(username));
         return "redirect:/profile/{username}";

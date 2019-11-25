@@ -19,6 +19,8 @@ public class Follow extends AbstractPersistable<Long> {
     @JoinColumn(name = "follow_user_id")
     private Account following;
 
+    private Boolean blocked;
+
     private String date;
     private String time;
 }

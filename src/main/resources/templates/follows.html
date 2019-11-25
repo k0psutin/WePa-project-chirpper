@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <title>Chirpper!</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <!-- Removed ', shrink-to-fit=no' from meta -->
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Bootstrap CSS -->
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://kit.fontawesome.com/5b04f5dd6f.js"
+      crossorigin="anonymous"
+    ></script>
+    <title>Chirpper</title>
+  </head>
+  <body>
+    <div class="container-fluid">
+      <nav
+        class="navbar navbar-expand-sm navbar-dark"
+        style="background-color:darkred;"
+      >
+        <img
+          src="../public/img/cartoon-bird-hi.png"
+          width="3%"
+          height="3%"
+          alt=""
+          th:src="@{../img/cartoon-bird-hi.png}"
+        />
+        <a class="navbar-brand" href="#">Chirpper</a>
+        <button
+          class="navbar-toggler d-lg-none"
+          type="button"
+          data-toggle="collapse"
+          data-target="#collapsibleNavId"
+          aria-controls="collapsibleNavId"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        ></button>
+        <div class="collapse navbar-collapse" id="collapsibleNavId">
+          <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+            <li class="nav-item">
+              <a class="nav-link" href="#">Feed</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" th:href="@{/profile/}">Profile</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" th:href="@{/profile/follows}">Following</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Notifications</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" th:href="@{/logout}">Logout</a>
+            </li>
+          </ul>
+          <form
+            th:action="@{/profile/search/}"
+            method="post"
+            class="form-inline my-2 my-lg-0"
+          >
+            <input
+              class="form-control mr-sm-2"
+              type="text"
+              placeholder="Search for users..."
+              name="user"
+            />
+            <button class="btn btn-outline-danger my-2 my-sm-0" type="submit">
+              Search
+            </button>
+          </form>
+        </div>
+      </nav>
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-sm-3">
+            <!-- Profile picture start -->
+            <div class="card border-light">
+              <span th:if="${user.profilePicId} == null"
+                ><img
+                  class="card-img-top"
+                  src="../public/img/no-profile-picture.jpg"
+                  th:src="@{/img/no-profile-picture.jpg}"
+                  alt="avatar"
+              /></span>
+              <span th:unless="${user.profilePicId} == null"
+                ><img
+                  class="card-img-top"
+                  th:src="@{/profile/img/{id}(id=${user.profilePicId})}"
+                  alt="avatar"
+              /></span>
+            </div>
+            <!-- Profile picture end -->
+            <p class="text-muted text-center">
+              <span th:text="${user.firstName} + ' ' + ${user.lastName}">
+                Firstname Lastname
+              </span>
+              <span th:unless="${#strings.equals(current, user.username)}">
+                <a
+                  th:href="@{/profile/{username}/follow(username=${user.username})}"
+                  ><i class="fas fa-user-plus" style="color:darkred;"></i
+                ></a>
+              </span>
+            </p>
+            <!-- User album button start -->
+            <div class="container text-center">
+              <a
+                th:href="@{/profile/{username}/album(username=${user.username})}"
+                type="button"
+                class="btn btn-danger"
+                ><small>User album</small></a
+              >
+            </div>
+            <!-- User album button end -->
+          </div>
+          <div class="col-sm container-fluid text-center">
+            <h4>Following:</h4>
+            <tr th:each="follower: ${follows}">
+              <div class="col-sm">
+                <h5>
+                  <a
+                    style="color:darkred;"
+                    th:href="@{/profile/{username}(username=${follower.following.username})}"
+                    class="text-center"
+                    th:text="${follower.following.username}"
+                    >aaa
+                  </a>
+                  <button class="btn btn-danger">Block user</button>
+                </h5>
+              </div>
+            </tr>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script
+      src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+      integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+      integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+      integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>
+
+<!-- 
+  <div class="col-sm">
+              Following:
+              <div>
+                  <tr th:each="follower: ${follows}">
+                    <div>
+                        <li th:text="${follower.following.username}"></li>
+                    </div>
+                  </tr>
+                </div>
+            </div>
+-->
