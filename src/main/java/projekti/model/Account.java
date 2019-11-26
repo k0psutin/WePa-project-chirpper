@@ -19,15 +19,4 @@ public class Account extends AbstractPersistable<Long> {
     private String password;
 
     private Long profilePicId;
-
-    // Mieti järkevät taulukonnimet jne...
-
-    // @OneToMany
-    // private List<Follow> follow = new ArrayList<>();
-
-    @OneToMany(mappedBy = "account")
-    private List<Post> post = new ArrayList<>();
-
-    @OneToMany(mappedBy = "account")
-    private List<Photo> photo = new ArrayList<>();
 }

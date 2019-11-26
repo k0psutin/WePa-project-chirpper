@@ -24,7 +24,7 @@
     <title>Chirpper</title>
   </head>
   <body>
-    <div class="container-fluid">
+    <div class="container">
     <nav
       class="navbar navbar-expand-sm navbar-dark"
       style="background-color:darkred;"
@@ -85,8 +85,8 @@
             <span th:if="${user.profilePicId} == null"
               ><img
                 class="card-img-top"
-                src="../public/img/no-profile-picture.jpg"
-                th:src="@{/img/no-profile-picture.jpg}"
+                src="../public/img/cartoon-bird-hi.png"
+                th:src="@{/img/cartoon-bird-hi.png}"
                 alt="avatar"
             /></span>
             <span th:unless="${user.profilePicId} == null"
@@ -129,6 +129,7 @@
           <!-- New post start -->
           <div class="card text-left"  th:if="${#strings.equals(current, user.username)}">
             <div class="card-body">
+              <!-- Tarviiko profiilikuvaa tässä?
               <span th:if="${user.profilePicId} == null"
                 ><img
                   class="card-img-thumbnail"
@@ -146,6 +147,7 @@
                   width="10%"
                   height="10%"
               /></span>
+              -->
               <div class="form-group">
                 <form th:action="@{/profile/{username}/post/(username=${user.username})}" class="form-container" method="post">
                   <div class="input-group mb-3">
@@ -167,7 +169,7 @@
           </div>
           <!-- New post end -->
           <!-- Defaul message for no posts -->
-          <div class="row" th:if="${user.post.empty}">
+          <div class="row" th:if="${posts.empty}">
             <div class="col-sm">
               <br />
               <div class="card">
@@ -179,8 +181,8 @@
           </div>
           <!-- Default message end -->
           <!-- Post start -->
-          <div th:unless="${user.post.empty}">
-            <tr th:each="post: ${user.post}">
+          <div th:unless="${posts.empty}">
+            <tr th:each="post: ${posts}">
               <div class="row">
                 <div class="col-sm">
                   <br />

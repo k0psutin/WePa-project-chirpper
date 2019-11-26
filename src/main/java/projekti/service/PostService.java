@@ -3,6 +3,9 @@ package projekti.service;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import projekti.model.Post;
 import projekti.repository.PostRepository;
@@ -19,14 +22,14 @@ public class PostService {
     private PostRepository postRepository;
 
     @Autowired
-    private AccountRepository accountRepository;
+    private AccountService accountService;
 
     public void createPost(String username, String content) {
         if (username.length() == 0 | content.length() == 0) {
             return;
         }
         System.out.println(LocalDateTime.now());
-        Account acc = accountRepository.findByUsername(username);
+        Account acc = accountService.getAccount(username);
         Post post = new Post();
         post.setAccount(acc);
         post.setContent(content);
@@ -34,9 +37,11 @@ public class PostService {
         DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         post.setTime(LocalTime.now().format(formatter));
         post.setDate(LocalDate.now().format(formatter2));
-        acc.getPost().add(post);
         postRepository.save(post);
-        accountRepository.save(acc);
+    }
+
+    public List<Post> getUserFeed(long id) {
+        return postRepository.getUserFeed(id);
     }
 
     public void likeAPost(Long id) {
@@ -44,14 +49,14 @@ public class PostService {
         System.out.println("Post id: " + id);
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username = auth.getName();
-        Account acc = accountRepository.findByUsername(username);
+        Account acc = accountService.getAccount(username);
         if (!post.getLikes().contains(acc)) {
             post.getLikes().add(acc);
             postRepository.save(post);
         }
     }
 
-    public List<Post> returnPosts(String username) {
-        return accountRepository.findByUsername(username).getPost();
+    public List<Post> getPosts(Account account) {
+        return postRepository.findAllByAccountOrderByDateDescTimeDesc(account);
     }
 }

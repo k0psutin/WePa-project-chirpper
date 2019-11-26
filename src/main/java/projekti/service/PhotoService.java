@@ -38,16 +38,15 @@ public class PhotoService {
 
     public boolean uploadPhoto(String username, String story, MultipartFile file) throws IOException {
         Account acc = accountService.getAccount(username);
-        if (!file.getContentType().contains("image") || file.getSize() == 0 || acc.getPost().size() <= 10) {
+        List<Photo> photos = photoRepository.findAllByAccountUsername(username);
+        if (!file.getContentType().contains("image") || file.getSize() == 0 || photos.size() <= 10) {
             return false;
         }
         Photo photo = new Photo();
         photo.setStory(story);
         photo.setContent(file.getBytes());
-        acc.getPhoto().add(photo);
         photo.setAccount(acc);
         photoRepository.save(photo);
-        accountService.saveAccount(acc);
         return true;
     }
 }

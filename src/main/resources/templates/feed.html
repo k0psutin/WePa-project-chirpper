@@ -24,7 +24,7 @@
     <title>Chirpper</title>
   </head>
   <body>
-    <div class="container-fluid">
+    <div class="container">
     <nav
       class="navbar navbar-expand-sm navbar-dark"
       style="background-color:darkred;"
@@ -79,14 +79,9 @@
     </nav>
     <div class="container-fluid">
           <br>
-          <h4 class="container text-center" th:unless="${#strings.equals(current, user.username)}">
+          <h4 class="container text-center">
             <small></small>
-            <span th:text="${user.username}"></span><small>'s wall of Chirps!</small>
-          </h4>
-          <h4 class="container text-center" th:if="${#strings.equals(current, user.username)}">
-            <small>Welcome back </small>
-            <span th:text="${user.username} + '!'"></span
-            ><small> Add a new chirp!</small>
+            <small>Chirps from the flock!</small>
           </h4>
           <br />
           <!-- New post start -->
@@ -130,7 +125,7 @@
           </div>
           <!-- New post end -->
           <!-- Defaul message for no posts -->
-          <div class="row" th:if="${user.post.empty}">
+          <div class="row" th:if="${posts.empty}">
             <div class="col-sm">
               <br />
               <div class="card">
@@ -142,22 +137,38 @@
           </div>
           <!-- Default message end -->
           <!-- Post start -->
-          <div th:unless="${user.post.empty}">
-            <tr th:each="post: ${user.post}">
+          <div th:unless="${posts.empty}">
+            <tr th:each="post: ${posts}">
               <div class="row">
                 <div class="col-sm">
                   <br />
                   <div class="card">
                     <div class="card-header">
-                      
+                      <span th:if="${post.account.profilePicId} == null"
+                      ><img
+                        class="card-img-thumbnail"
+                        src="../public/img/cartoon-bird-hi.png"
+                        th:src="@{/img/cartoon-bird-hi.png}"
+                        alt=""
+                        width="5%"
+                        height="5%"
+                    /></span>
+                    <span th:unless="${post.account.profilePicId} == null"
+                      ><img
+                        class="card-img-thumbnail"
+                        th:src="@{/profile/img/{id}(id=${post.account.profilePicId})}"
+                        alt=""
+                        width="10%"
+                        height="10%"
+                    /></span>
                         <span
                           class="text"
-                          th:text="${user.firstName} + ' ' + ${user.lastName}"
+                          th:text="${post.account.firstName} + ' ' + ${post.account.lastName}"
                           >Username</span
                         >
                         <small
-                          ><span th:text="'@' + ${user.username}"
-                            >username</span
+                          ><a style="color:darkred;" th:href="@{/profile/{username}(username=${post.account.username})}" th:text="'@' + ${post.account.username}"
+                            >username</a
                           ></small
                         >
                         <span

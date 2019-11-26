@@ -53,8 +53,8 @@ public class FollowService {
             System.out.println("Ei lisätä, löytyy jo");
     }
 
-    public List<Follow> getFollows() {
-        return followRepository.findAllByUser(accountService.getCurrentUser());
+    public List<Follow> getFollows(Account account) {
+        return followRepository.findAllByUser(account);
     }
 
     public List<Follow> getFollowByOrder() {

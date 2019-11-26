@@ -6,7 +6,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import projekti.model.*;
 import projekti.service.*;
+
+import java.util.*;
 
 @Controller
 public class FollowController {
@@ -17,16 +20,24 @@ public class FollowController {
     @Autowired
     private AccountService accountService;
 
+    @Autowired
+    private PostService postService;
+
     @GetMapping("/profile/feed")
     public String userFeed(Model model) {
-        model.addAttribute("follows", followService.getFollowByOrder());
-        model.addAttribute("user", accountService.getCurrentUser());
+        Account acc = accountService.getCurrentUser();
+        List<Post> posts = postService.getUserFeed(acc.getId());
+        posts.stream().forEach(post -> {
+            System.out.println("Username: " + post.getAccount().getUsername() + " Post: " + post.getContent());
+        });
+        model.addAttribute("user", acc);
+        model.addAttribute("posts", posts);
         return "feed";
     }
 
     @GetMapping("/profile/follows")
     public String followList(Model model) {
-        model.addAttribute("follows", followService.getFollows());
+        model.addAttribute("follows", followService.getFollows(accountService.getCurrentUser()));
         model.addAttribute("user", accountService.getCurrentUser());
         return "follows";
     }
