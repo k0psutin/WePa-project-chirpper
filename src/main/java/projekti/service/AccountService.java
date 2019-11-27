@@ -25,7 +25,11 @@ public class AccountService {
     }
 
     public void saveAccount(Account acc) {
-        accountRepository.save(acc);
+        try {
+            accountRepository.save(acc);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     public Account changeAvatar(String username, Long id) {
