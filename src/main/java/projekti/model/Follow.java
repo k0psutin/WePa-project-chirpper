@@ -1,9 +1,7 @@
 package projekti.model;
 
-import java.time.LocalDateTime;
 import javax.persistence.*;
 import lombok.*;
-import java.util.*;
 import org.springframework.data.jpa.domain.AbstractPersistable;
 
 @Data

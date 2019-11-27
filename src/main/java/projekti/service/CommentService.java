@@ -8,8 +8,6 @@ import org.springframework.stereotype.Service;
 import projekti.model.*;
 import projekti.repository.*;
 
-import java.util.*;
-
 @Service
 public class CommentService {
 
@@ -18,9 +16,6 @@ public class CommentService {
 
         @Autowired
         private PostRepository postRepository;
-
-        @Autowired
-        private AccountService accountService;
 
         public void createComment(Long id, String comment, Account user) {
                 if (comment.length() == 0) {

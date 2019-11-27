@@ -2,7 +2,6 @@ package projekti.model;
 
 import javax.persistence.Entity;
 import lombok.*;
-import java.util.*;
 import javax.persistence.*;
 import org.springframework.data.jpa.domain.AbstractPersistable;
 

@@ -5,8 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.*;
 import org.springframework.stereotype.Service;
-import projekti.model.Account;
-import projekti.repository.AccountRepository;
+import projekti.model.*;
+import projekti.repository.*;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
