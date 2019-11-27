@@ -51,6 +51,7 @@ public class AccountService {
             account.setFirstName(firstName);
             account.setLastName(lastName);
             account.setPassword(psw);
+            accountRepository.save(account);
             System.out.println("Pitäisi tallentaa");
         } catch (Exception e) {
             System.out.println(e.getStackTrace());
