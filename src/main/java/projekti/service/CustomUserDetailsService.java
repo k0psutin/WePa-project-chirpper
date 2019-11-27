@@ -9,7 +9,6 @@ import projekti.model.Account;
 import projekti.repository.AccountRepository;
 
 @Service
-@Profile("production")
 public class CustomUserDetailsService implements UserDetailsService {
 
     @Autowired
