@@ -2,6 +2,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "CodeLens (Launch) - ChirpperApplication",
+            "request": "launch",
+            "mainClass": "projekti.ChirpperApplication",
+            "projectName": "wepa_Projekti"
+        },
+        {
+            "type": "java",
             "name": "Spring Boot-MyApplication<wepa_Projekti>",
             "request": "launch",
             "cwd": "${workspaceFolder}",
