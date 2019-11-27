@@ -101,12 +101,6 @@
               <span th:text="${user.firstName} + ' ' + ${user.lastName}">
                 Firstname Lastname
               </span>
-              <span th:unless="${#strings.equals(current, user.username)}">
-                <a
-                  th:href="@{/profile/{username}/follow(username=${user.username})}"
-                  ><i class="fas fa-user-plus" style="color:darkred;"></i
-                ></a>
-              </span>
             </p>
             <!-- User album button START -->
             <div class="container text-center">
@@ -127,7 +121,7 @@
                 <h5>
                   <a
                     style="color:darkred;"
-                    th:href="@{/profile/{username}(username=${follow.user.username})}"
+                    th:href="@{/profile/{username}(username=${follow.following.username})}"
                     class="text-center"
                     th:text="${follow.following.username}"
                     >Following users

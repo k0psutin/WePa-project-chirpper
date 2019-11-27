@@ -16,7 +16,11 @@ public class PhotoCommentService {
         @Autowired
         private PhotoRepository photoRepository;
 
+        @Autowired
+        private AccountService accountService;
+
         public void createComment(Long id, String comment, String user) {
+                Account acc = accountService.getAccount(user);
                 PhotoComment cmt = new PhotoComment();
                 Photo photo = photoRepository.getOne(id);
 
@@ -25,7 +29,7 @@ public class PhotoCommentService {
                 DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("dd-MM-yyyy");
                 cmt.setTime(LocalTime.now().format(formatter));
                 cmt.setDate(LocalDate.now().format(formatter2));
-                cmt.setUsername(user);
+                cmt.setUser(acc);
                 cmt.setPhoto(photo);
                 photo.getComment().add(cmt);
 

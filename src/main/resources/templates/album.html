@@ -120,48 +120,71 @@
           <!-- User album button end -->
         </div>
         <div class="col-sm container-fluid text-center">
-          <div class="container" th:if="${photos.empty}">
+          <div class="container">
             <br />
-            <h5><b>Your gallery looks empty, upload some photos!</b></h5>
-            <hr />
-          </div>
-          <div class="form-group">
-            <form
-              th:action="@{/profile/{username}/album/(username=${user.username})}"
-              class="form-container"
-              enctype="multipart/form-data"
-              method="post"
+
+            <h5 th:unless="${#strings.equals(current, user.username)}">
+              <span th:text="${user.username}"></span>'s famous photos!
+            </h5>
+            <div th:if="${#strings.equals(current, user.username)}">
+              <h5>
+                Your gallery looks empty, upload some photos!
+              </h5>
+              <br />
+            </div>
+            <div
+              class="form-group"
+              th:if="${#strings.equals(current, user.username)}"
             >
-              <div class="container-fluid">
-                <input name="file" type="file" id="customFile" />
-                <br />
-              </div>
-              <div class="input-group mb-3">
-                <input
-                  type="text"
-                  class="form-control"
-                  name="story"
-                  id="write_content"
-                  placeholder="Say something about the photo..."
-                />
-                <button class="btn btn-danger" type="submit">Send</button>
-              </div>
-            </form>
+              <form
+                th:action="@{/profile/{username}/album/(username=${user.username})}"
+                class="form-container"
+                enctype="multipart/form-data"
+                method="post"
+              >
+                <div class="form-group">
+                  <small id="customFile" class="form-text text-muted text-left"
+                    >Please note that max filesize is 50kb.</small
+                  >
+                  <input
+                    class="float-left"
+                    name="file"
+                    type="file"
+                    id="customFile"
+                  />
+
+                  <br />
+                  <br />
+                </div>
+                <div class="input-group mb-3">
+                  <input
+                    type="text"
+                    class="form-control"
+                    name="story"
+                    id="write_content"
+                    placeholder="Say something about the photo..."
+                  />
+                  <button class="btn btn-danger" type="submit">Send</button>
+                </div>
+              </form>
+            </div>
           </div>
           <div class="container" th:unless="${photos.empty}">
             <tr th:each="photo: ${photos}">
               <div class="card">
-                <img
-                  class="card-img-top"
-                  th:src="@{/profile/img/{id}(id=${photo.id})}"
-                />
+                <div>
+                  <img
+                    class="card-img-top"
+                    style="width: 10vw; height: auto;"
+                    th:src="@{/profile/img/{id}(id=${photo.id})}"
+                  />
+                </div>
                 <div class="card-body">
                   <p class="card-text text-left">
-                    <i
-                      class="fas fa-heart"
-                      style="color:red"
-                      th:text="' ' + ${#lists.size(photo.likes)}"
-                    ></i>
+                    <a
+                      th:href="@{/profile/img/{id}/like/{username}(id=${photo.id}, username=${user.username})}"
+                      ><i class="fas fa-heart" style="color:red"> </i></a
+                    ><span th:text="' ' + ${#lists.size(photo.likes)}">0</span>
                   </p>
                   <p class="card-text" th:text="${photo.story}">Text</p>
                   <p class="card-text">
@@ -172,6 +195,92 @@
                     >
                   </p>
                 </div>
+                <!-- No comments default start -->
+                <div
+                  class="card-footer bg-white"
+                  th:if="${photo.comment.empty}"
+                >
+                  No tweetback yet!
+                </div>
+                <!-- No comments default end -->
+                <!-- Comments start -->
+                <div
+                  class="card-footer bg-white"
+                  th:unless="${photo.comment.empty}"
+                >
+                  <div th:each="comment : ${photo.comment}">
+                    <div>
+                      <div>
+                        <span th:if="${comment.user.profilePicId} == null"
+                          ><img
+                            class="card-img-thumbnail float-left"
+                            style="contain:none; object-fit:cover; width: 5vh; height: 5vh;"
+                            src="../public/img/cartoon-bird-hi.png"
+                            th:src="@{/img/cartoon-bird-hi.png}"
+                            width="10%"
+                        /></span>
+                        <span th:unless="${comment.user.profilePicId} == null"
+                          ><img
+                            class="card-img-thumbnail rounded-circle float-left"
+                            style="contain:none; object-fit:cover; width: 5vh; height: 5vh;"
+                            th:src="@{/profile/img/{id}(id=${comment.user.profilePicId})}"
+                            alt="avatar"
+                        /></span>
+                        <small
+                          ><a
+                            style="color:darkred;"
+                            class="nav-link active text-left"
+                            th:href="@{/profile/{username}(username=${comment.user.username})}"
+                            th:text="'@' + ${comment.user.username}"
+                            >username</a
+                          >
+                          <span
+                            class="text float-right"
+                            th:text="${comment.date} + ' ' + ${comment.time}"
+                          >
+                            11:54</span
+                          >
+                        </small>
+                      </div>
+                      <p
+                        class="container text-left"
+                        th:text="${comment.content}"
+                      >
+                        comment
+                      </p>
+                      <!-- Comments end -->
+                    </div>
+                  </div>
+                </div>
+                <!-- Make a comment start -->
+
+                <div class="card-footer bg-white">
+                  <span class="text text-muted">Add a tweet</span>
+                  <div class="form-group">
+                    <form
+                      th:action="@{/profile/{username}/img/{id}/comment(username=${user.username}, id=${photo.id})}"
+                      method="post"
+                    >
+                      <div class="input-group mb-3">
+                        <input
+                          type="text"
+                          name="comment"
+                          id="comment"
+                          class="form-control"
+                          placeholder="Your tweetback..."
+                          aria-label="Recipient's username"
+                          aria-describedby="basic-addon2"
+                        />
+                        <div class="input-group-append">
+                          <button class="btn btn-danger" type="submit">
+                            Tweet
+                          </button>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+                <!-- Make a comment end -->
               </div>
             </tr>
           </div>

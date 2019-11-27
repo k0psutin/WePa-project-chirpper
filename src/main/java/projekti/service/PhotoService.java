@@ -19,6 +19,7 @@ public class PhotoService {
     @Autowired
     private AccountService accountService;
 
+    @Transactional
     public List<Photo> getPhotos(String username) {
         return photoRepository.findAllByAccountUsername(username);
     }
@@ -44,7 +45,7 @@ public class PhotoService {
         long count = photoRepository.count();
 
         if (!username.equals(acc.getUsername()) | !file.getContentType().contains("image") || file.getSize() == 0
-                || count > 9) {
+                || count > 9 || file.getSize() > 50000) {
             System.out.println("Ei lisätä");
             return false;
         }

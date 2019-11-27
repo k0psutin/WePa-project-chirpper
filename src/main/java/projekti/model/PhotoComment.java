@@ -12,7 +12,10 @@ public class PhotoComment extends AbstractPersistable<Long> {
     private String content;
     private String time;
     private String date;
-    private String username;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private Account user;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "photo_id")

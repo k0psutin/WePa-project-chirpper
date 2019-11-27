@@ -6,6 +6,8 @@ import org.springframework.stereotype.*;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import projekti.service.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -30,10 +32,11 @@ public class AlbumController {
     }
 
     @GetMapping("/profile/img/{id}/like/{username}")
-    public String likePost(Model model, @PathVariable String username, @PathVariable Long id) {
+    public String likePost(Model model, RedirectAttributes redirectAttributes, @PathVariable String username,
+            @PathVariable Long id) {
         photoService.likeAImg(id);
-        model.addAttribute("user", accountService.getAccount(username));
-        return "album";
+        redirectAttributes.addAttribute("user", username);
+        return "redirect:/profile/{username}/album";
     }
 
     @GetMapping(path = "/profile/img/{id}", produces = "image/*")
