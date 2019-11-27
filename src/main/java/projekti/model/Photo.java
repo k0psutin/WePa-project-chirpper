@@ -27,5 +27,6 @@ public class Photo extends AbstractPersistable<Long> {
 
     @Lob
     @Basic(fetch = FetchType.LAZY)
+    @Type(type = "org.hibernate.type.BinaryType")
     private byte[] content;
 }
