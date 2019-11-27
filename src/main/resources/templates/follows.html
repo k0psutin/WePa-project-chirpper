@@ -81,21 +81,21 @@
         <div class="row">
           <div class="col-sm-3">
             <!-- Profile picture start -->
-            div class="card border-light">
-            <span th:if="${user.profilePicId} == null"
-            ><img
-              class="card-img-top"
-              src="../public/img/cartoon-bird-hi.png"
-              th:src="@{/img/cartoon-bird-hi.png}"
-              alt="avatar"
-          /></span>
-          <span th:unless="${user.profilePicId} == null"
-            ><img
-              class="card-img-top"
-              th:src="@{/profile/img/{id}(id=${user.profilePicId})}"
-              alt="avatar"
-          /></span>
-          </div>
+           <div class="card border-light">
+              <span th:if="${user.profilePicId} == null"
+              ><img
+                class="card-img-top"
+                src="../public/img/cartoon-bird-hi.png"
+                th:src="@{/img/cartoon-bird-hi.png}"
+                alt="avatar"
+            /></span>
+            <span th:unless="${user.profilePicId} == null"
+              ><img
+                class="card-img-top"
+                th:src="@{/profile/img/{id}(id=${user.profilePicId})}"
+                alt="avatar"
+            /></span>
+            </div>
             <!-- Profile picture END -->
             <p class="text-muted text-center">
               <span th:text="${user.firstName} + ' ' + ${user.lastName}">
