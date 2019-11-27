@@ -9,6 +9,7 @@ import org.springframework.data.jpa.domain.AbstractPersistable;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@Table(name = "chirpper_accs")
 public class Account extends AbstractPersistable<Long> {
 
     @Column(unique = true)
