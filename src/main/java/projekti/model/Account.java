@@ -9,13 +9,12 @@ import org.springframework.data.jpa.domain.AbstractPersistable;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "chirpper_accs")
 public class Account extends AbstractPersistable<Long> {
 
     @Column(unique = true)
     private String username;
-    private String firstName;
-    private String lastName;
+    private String firstname;
+    private String lastname;
     private String password;
 
     private Long profilePicId;

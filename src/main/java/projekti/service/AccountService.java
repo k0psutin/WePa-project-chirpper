@@ -40,14 +40,19 @@ public class AccountService {
     }
 
     public void createAccount(String username, String password, String firstName, String lastName) {
-        BCryptPasswordEncoder pswEncoder = new BCryptPasswordEncoder();
-        String psw = pswEncoder.encode(password);
-        Account account = new Account();
-        account.setUsername(username);
-        account.setFirstName(firstName);
-        account.setLastName(lastName);
-        account.setPassword(psw);
-        accountRepository.save(account);
-        System.out.println("Pitäisi tallentaa");
+        try {
+            BCryptPasswordEncoder pswEncoder = new BCryptPasswordEncoder();
+            String psw = pswEncoder.encode(password);
+            Account account = new Account();
+            account.setUsername(username);
+            account.setFirstname(firstName);
+            account.setLastname(lastName);
+            account.setPassword(psw);
+            accountRepository.save(account);
+            System.out.println("Pitäisi tallentaa");
+        } catch (Exception e) {
+            System.out.println(e.getStackTrace());
+            System.out.println(e.getMessage());
+        }
     }
 }
