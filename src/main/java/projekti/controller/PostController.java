@@ -1,10 +1,6 @@
 package projekti.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties.Sort;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -27,7 +23,6 @@ public class PostController {
     @PostMapping("/profile/{username}/post")
     public String newPost(Model model, @PathVariable String username, @RequestParam String content) {
         postService.createPost(username, content);
-        model.addAttribute("user", accountService.getAccount(username));
         return "redirect:/profile/{username}";
     }
 
@@ -43,7 +38,14 @@ public class PostController {
             @RequestParam String comment) {
         Account user = accountService.getCurrentUser();
         commentService.createComment(id, comment, user);
-        model.addAttribute("user", accountService.getAccount(username));
         return "redirect:/profile/{username}";
+    }
+
+    @PostMapping("/profile/feed/{username}/comment/{id}")
+    public String addFeedComment(Model model, @PathVariable String username, @PathVariable Long id,
+            @RequestParam String comment) {
+        Account user = accountService.getCurrentUser();
+        commentService.createComment(id, comment, user);
+        return "redirect:/profile/feed";
     }
 }

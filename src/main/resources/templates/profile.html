@@ -77,12 +77,12 @@
         </form>
       </div>
     </nav>
-    <div class="container-fluid">
+    <div >
       <div class="row">
         <div class="col-sm-3">
           <!-- Profile picture start -->
           <div class="card border-light">
-            <span th:if="${user.profilePicId} == null"
+              <span th:if="${user.profilePicId} == null"
               ><img
                 class="card-img-top"
                 src="../public/img/cartoon-bird-hi.png"
@@ -95,7 +95,7 @@
                 th:src="@{/profile/img/{id}(id=${user.profilePicId})}"
                 alt="avatar"
             /></span>
-          </div>
+            </div>
           <!-- Profile picture end -->
           <p class="text-muted text-center">
           <span
@@ -114,10 +114,9 @@
           </div>
           <!-- User album button end -->
         </div>
-        <div class="col-sm">
+        <div class="col">
           <br>
           <h4 class="container text-center" th:unless="${#strings.equals(current, user.username)}">
-            <small></small>
             <span th:text="${user.username}"></span><small>'s wall of Chirps!</small>
           </h4>
           <h4 class="container text-center" th:if="${#strings.equals(current, user.username)}">
@@ -125,7 +124,7 @@
             <span th:text="${user.username} + '!'"></span
             ><small> Add a new chirp!</small>
           </h4>
-          <br />
+          <br>
           <!-- New post start -->
           <div class="card text-left"  th:if="${#strings.equals(current, user.username)}">
             <div class="card-body">
@@ -163,14 +162,13 @@
                   </div>
                 </div>
               </div>
-              </button>
             </form>
             </div>
           </div>
           <!-- New post end -->
           <!-- Defaul message for no posts -->
-          <div class="row" th:if="${posts.empty}">
-            <div class="col-sm">
+          <div th:if="${posts.empty}">
+            <div>
               <br />
               <div class="card">
                 <div class="card-body">
@@ -181,10 +179,9 @@
           </div>
           <!-- Default message end -->
           <!-- Post start -->
-          <div th:unless="${posts.empty}">
-            <tr th:each="post: ${posts}">
-              <div class="row">
-                <div class="col-sm">
+            
+            <div th:unless="${posts.empty}">
+              <div th:each="post: ${posts}">
                   <br />
                   <div class="card">
                     <div class="card-header">
@@ -206,7 +203,6 @@
                           11:54</span
                         >
                       </div>
-                    </div>
                     <div class="card-body">
                       <p class="card-text" th:text="${post.content}">
                         Enter some text here
@@ -230,23 +226,24 @@
                       class="card-footer bg-white"
                       th:unless="${post.comment.empty}"
                     >
-                      <span th:each="comment : ${post.comment}">
+                      <div th:each="comment : ${post.comment}">
                         <div>
                             <div>
-                                <span th:if="${comment.user.profilePicId} == null"
+                                 <span th:if="${comment.user.profilePicId} == null"
                                 ><img
-                                class="img-fluid card-img-thumbnail rounded float-left"
-                                  src="../public/img/no-profile-picture.jpg"
-                                  th:src="@{/img/no-profile-picture.jpg}"
+                                class="card-img-thumbnail float-left"
+                                style="contain:none; object-fit:cover; width: 5vh; height: 5vh;"
+                                src="../public/img/cartoon-bird-hi.png"
+                                th:src="@{/img/cartoon-bird-hi.png}"
                                   width="10%"
                            
                               /></span>
                               <span th:unless="${comment.user.profilePicId} == null"
                                 ><img
-                                class="img-fluid card-img-thumbnail rounded float-left"
+                                class="card-img-thumbnail rounded-circle float-left"
+                                style="contain:none; object-fit:cover; width: 5vh; height: 5vh;"
                                   th:src="@{/profile/img/{id}(id=${comment.user.profilePicId})}"
                                   alt="avatar"
-                                  width="10%"
                               /></span>
                           <small
                             ><a style="color:darkred;" class="nav-link active" th:href="@{/profile/{username}(username=${comment.user.username})}" th:text="'@' + ${comment.user.username}"
@@ -260,14 +257,23 @@
                             >
                           </small>
                         </div>
-                        <p class="container" th:text="${comment.content}">
-                          comment
-                        </p>
-                      </span>
+                            <p class="container" th:text="${comment.content}">
+                                comment
+                              </p>
+                            <!-- Comments end -->
+                        
+                    
+                      </div>
+                      
                     </div>
-                    <!-- Comments end -->
-                    <!-- Make a comment start -->
-                    <div class="card-footer bg-white">
+                    
+                   
+                    
+                  </div>
+                    
+                  <!-- Make a comment start -->
+                    
+                  <div class="card-footer bg-white">
                       <span class="text text-muted">Add a tweet</span>
                       <div class="form-group">
                         <form
@@ -284,17 +290,15 @@
                       </div>
                     </div>
                     <!-- Make a comment end -->
-                  </div>
-                </div>
               </div>
-            </tr>
-          </div>
-
-          <!-- Post end -->
+            </div>
         </div>
       </div>
     </div>
-  </div>
+    </div>
+    </div>
+                  
+            
     <script
       src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
       integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
@@ -310,5 +314,7 @@
       integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
       crossorigin="anonymous"
     ></script>
+    <script th:inline="javascript"> var contextRoot = /*[[@{/}]]*/ '';</script>
+    <script th:src="@{/javascript/script.js}" defer></script>
   </body>
 </html>

@@ -27,9 +27,6 @@ public class FollowController {
     public String userFeed(Model model) {
         Account acc = accountService.getCurrentUser();
         List<Post> posts = postService.getUserFeed(acc.getId());
-        posts.stream().forEach(post -> {
-            System.out.println("Username: " + post.getAccount().getUsername() + " Post: " + post.getContent());
-        });
         model.addAttribute("user", acc);
         model.addAttribute("posts", posts);
         return "feed";
@@ -37,7 +34,9 @@ public class FollowController {
 
     @GetMapping("/profile/follows")
     public String followList(Model model) {
-        model.addAttribute("follows", followService.getFollows(accountService.getCurrentUser()));
+        Account acc = accountService.getCurrentUser();
+        model.addAttribute("following", followService.getFollowsByUser(acc));
+        model.addAttribute("follows", followService.getFollowingUser(acc));
         model.addAttribute("user", accountService.getCurrentUser());
         return "follows";
     }

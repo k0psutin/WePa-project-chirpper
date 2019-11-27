@@ -1,277 +1,197 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
-    <head>
-        <script src="https://kit.fontawesome.com/5b04f5dd6f.js" crossorigin="anonymous"></script>
-<title th:text="${user.username} + ' profile'">Profile page</title>
- </head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-<link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Roboto'>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<style>
-html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif}
-{box-sizing: border-box;}
+  <head>
+    <title>Chirpper!</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <!-- Removed ', shrink-to-fit=no' from meta -->
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-/* Button used to open the contact form - fixed at the bottom of the page */
-.open-button {
-  background-color: #555;
-  color: white;
-  padding: 16px 20px;
-  border: none;
-  cursor: pointer;
-  opacity: 0.8;
-  position: center;
-  bottom: 23px;
-  right: 28px;
-  width: 500px;;
-}
-
-/* The popup form - hidden by default */
-.form-popup {
-  display: none;
-  position: center;
-  bottom: 0;
-  right: 15px;
-  border: 3px solid #f1f1f1;
-  z-index: 9;
-}
-
-/* Add styles to the form container */
-.form-container {
-  max-width: 500px;
-  padding: 10px;
-  background-color: white;
-}
-
-/* Full-width input fields */
-.form-container input[type=text], .form-container input[type=text] {
-  width: 100%;
-  padding: 15px;
-  margin: 5px 0 22px 0;
-  border: none;
-  background: #f1f1f1;
-}
-
-/* When the inputs get focus, do something */
-.form-container input[type=text]:focus, .form-container input[type=text]:focus {
-  background-color: #ddd;
-  outline: none;
-}
-
-/* Set a style for the submit/login button */
-.form-container .btn {
-  background-color: #4CAF50;
-  color: white;
-  padding: 16px 20px;
-  border: none;
-  cursor: pointer;
-  width: 100%;
-  margin-bottom:10px;
-  opacity: 0.8;
-}
-
-/* Add a red background color to the cancel button */
-.form-container .cancel {
-  background-color: red;
-}
-
-/* Add some hover effects to buttons */
-.form-container .btn:hover, .open-button:hover {
-  opacity: 1;
-}
-
-ul {
-  list-style-type: none;
-  margin: 0;
-  padding: 12px 20px 12px 40px;
-  font-size: 28px;
-}
-
-li {
-  display: inline;
-  padding: 12px 20px 12px 40px;
-}
-
-#search_bar {
-  background-image: url('/css/searchicon.png'); /* Add a search icon to input */
-  background-position: 10px 12px; /* Position the search icon */
-  background-repeat: no-repeat; /* Do not repeat the icon image */
-  width: 100%; /* Full-width */
-  font-size: 16px; /* Increase font-size */
-  padding: 12px 20px 12px 40px; /* Add some padding */
-  border: 1px solid #ddd; /* Add a grey border */
-}
-
-td {
-   padding: 12px 20px 12px 40px; /* Add some padding */
-   font-size: 28px;
-}
-</style>
-    <header class="w3-container w3-red w3-center w3-margin-bottom">
-        <table class="w3-container">
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td>Feed</td>
-           
-            <td></td>
-            <td></td>
-            <td></td>
-             <td><a th:href="@{/profile/{username}(username=${user.username})}">Profile</a></td>
-             <td><a th:href="@{/profile/{username}/album(username=${user.username})}">Photos</a></td>
-            <td>Followers</td>
-            <td></td>
-            <td></td>
-            <td></td>
-             <td></td>
-            <td></td>
-            <td><a th:href="@{/logout}">Logout</a></td>
-            
-            <td><form th:action="@{/profile/search/}" method="post">
-                            <input type="text" name="user" id="search_bar" placeholder="Search for users.." />
-                </form></td>
-            
-        </table>
-    </header>
-<body class="w3-light-grey">
-
-<!-- Page Container -->
-<div class="w3-content w3-margin-top" style="max-width:1400px;">
-
-  <!-- The Grid -->
-  <div class="w3-row-padding">
-  
-    <!-- Left Column -->
-    <div class="w3-third">
-    
-      <div class="w3-white w3-text-grey w3-card-4">
-        <div class="w3-display-container">
-            <span th:if="${user.profilePicId} == null"><img src="../public/img/no-profile-picture.jpg" style="width:400px" alt="Avatar" th:src="@{/img/no-profile-picture.jpg}" /></span>
-            <span th:unless="${user.profilePicId} == null"><img th:src="@{/profile/img/{id}(id=${user.profilePicId})}" style="width:400px" alt="Avatar"/></span>
-          <div class="w3-display-bottomleft w3-container w3-text-black">
-              <h2 th:text="${user.firstName} + ' ' + ${user.lastName}">Jane Doe</h2>
+    <!-- Bootstrap CSS -->
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://kit.fontawesome.com/5b04f5dd6f.js"
+      crossorigin="anonymous"
+    ></script>
+    <title>Chirpper</title>
+  </head>
+  <body>
+    <div class="container">
+      <nav
+        class="navbar navbar-expand-sm navbar-dark"
+        style="background-color:darkred;"
+      >
+        <img
+          src="../public/img/cartoon-bird-hi.png"
+          width="3%"
+          height="3%"
+          alt=""
+          th:src="@{../public/img/cartoon-bird-hi.png}"
+        />
+        <a class="navbar-brand" href="#">Chirpper</a>
+        <button
+          class="navbar-toggler d-lg-none"
+          type="button"
+          data-toggle="collapse"
+          data-target="#collapsibleNavId"
+          aria-controls="collapsibleNavId"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        ></button>
+        <div class="collapse navbar-collapse" id="collapsibleNavId">
+          <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+            <li class="nav-item">
+              <a class="nav-link" th:href="@{/profile/feed}">Feed</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" th:href="@{/profile/}">Profile</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" th:href="@{/profile/follows}">Following</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Notifications</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" th:href="@{/logout}">Logout</a>
+            </li>
+          </ul>
+          <form
+            th:action="@{/profile/search/}"
+            method="post"
+            class="form-inline my-2 my-lg-0"
+          >
+            <input
+              class="form-control mr-sm-2"
+              type="text"
+              placeholder="Search for users..."
+              name="user"
+            />
+            <button class="btn btn-outline-danger my-2 my-sm-0" type="submit">
+              Search
+            </button>
+          </form>
+        </div>
+      </nav>
+      <div class="row">
+        <div class="col-sm-3">
+          <!-- Profile picture start -->
+          <div class="card border-light">
+            <span th:if="${user.profilePicId} == null"
+              ><img
+                class="card-img-top"
+                src="../public/img/cartoon-bird-hi.png"
+                th:src="@{/img/cartoon-bird-hi.png}"
+                alt="avatar"
+            /></span>
+            <span th:unless="${user.profilePicId} == null"
+              ><img
+                class="card-img-top"
+                th:src="@{/profile/img/{id}(id=${user.profilePicId})}"
+                alt="avatar"
+            /></span>
+          </div>
+          <!-- Profile picture end -->
+          <p class="text-muted text-center">
+            <span th:text="${user.firstName} + ' ' + ${user.lastName}">
+              Firstname Lastname
+            </span>
+            <span th:unless="${#strings.equals(current, user.username)}">
+              <a
+                th:href="@{/profile/{username}/follow(username=${user.username})}"
+                ><i class="fas fa-user-plus" style="color:darkred;"></i
+              ></a>
+            </span>
+          </p>
+          <!-- User album button start -->
+          <div class="container text-center">
+            <a
+              th:href="@{/profile/{username}/album(username=${user.username})}"
+              type="button"
+              class="btn btn-danger"
+              ><small>User album</small></a
+            >
+          </div>
+          <!-- User album button end -->
+        </div>
+        <div class="col-sm container-fluid text-center">
+          <div class="container" th:if="${photos.empty}">
+            <br />
+            <h5><b>Your gallery looks empty, upload some photos!</b></h5>
+            <hr />
+          </div>
+          <div class="form-group">
+            <form
+              th:action="@{/profile/{username}/album/(username=${user.username})}"
+              class="form-container"
+              enctype="multipart/form-data"
+              method="post"
+            >
+              <div class="container-fluid">
+                <input name="file" type="file" id="customFile" />
+                <br />
+              </div>
+              <div class="input-group mb-3">
+                <input
+                  type="text"
+                  class="form-control"
+                  name="story"
+                  id="write_content"
+                  placeholder="Say something about the photo..."
+                />
+                <button class="btn btn-danger" type="submit">Send</button>
+              </div>
+            </form>
+          </div>
+          <div class="container" th:unless="${photos.empty}">
+            <tr th:each="photo: ${photos}">
+              <div class="card">
+                <img
+                  class="card-img-top"
+                  th:src="@{/profile/img/{id}(id=${photo.id})}"
+                />
+                <div class="card-body">
+                  <p class="card-text text-left">
+                    <i
+                      class="fas fa-heart"
+                      style="color:red"
+                      th:text="' ' + ${#lists.size(photo.likes)}"
+                    ></i>
+                  </p>
+                  <p class="card-text" th:text="${photo.story}">Text</p>
+                  <p class="card-text">
+                    <a
+                      style="color:darkred;"
+                      th:href="@{/profile/{username}/profile_pic/{id}(id=${photo.id}, username=${user.username})}"
+                      ><small>Set this photo as your profile picture!</small></a
+                    >
+                  </p>
+                </div>
+              </div>
+            </tr>
           </div>
         </div>
-        <div class="w3-container">
-          <p th:text="${user.username}">Default</p>
-          <hr>
-
-          <p class="w3-large"><b><i class="fa fa-users fa-fw w3-margin-right w3-text-red"></i>Following</b></p>
-          <!--
-          <tr th:if="${user.follow.empty}">
-          <p>None</p>
-          </tr>
-          <tr th:if="${!user.follow.empty}" th:each="friend: ${user.follow}">
-              <p th:href="@{/profile/{username}/(username=${friend.username})}" th:text="${friend.username}">Default</p>
-          </tr>
-        -->
-          <div class="w3-light-grey w3-round-xlarge w3-small">
-          </div>
-          <br>
-          <br>
-        </div>
-      </div><br>
-
-    <!-- End Left Column -->
-    </div>
-
-    <!-- Right Column -->
-    <div class="w3-twothird">
-      <div class="w3-container w3-card w3-white w3-margin-bottom">
-       
-
-        <h2 class="w3-text-grey w3-padding-16"><i class="fa fa-comment fa-fw w3-margin-right w3-xxlarge w3-text-red"></i>Image gallery</h2>
-           
-  
-    <div class="w3-container" th:if="${user.photo.empty}">
-        <br>
-          <h5 align="center" class="w3-opacity"><b>Your wall looks empty, upload some photos!</b></h5>
-          <hr>
-    </div>
-           <br>
-               <br>
-      
-    <div class="w3-container" th:if="${!user.photo.empty}">
-        
-        <tr th:each="photo: ${user.photo}">
-            
-          <img th:src="@{/profile/img/{id}(id=${photo.id})}"/>
-          <h6 class="w3-container" th:text="${photo.story}">Default post</h6>
-          <a th:href="@{/profile/{username}/profile_pic/{id}(id=${photo.id}, username=${user.username})}">change as your default picture</a>
-          <p align="right" class="w3-text-red"><a th:href="@{/profile/img/{id}/like/{username}(id=${photo.id}, username=${user.username})}"><span class="w3-left far fa-heart" th:text="' ' + ${#lists.size(photo.likes)}"></span></a></p>
-          <br>
-          <p>Comments:</p>
-          
-          <div class="w3-container" th:if="${photo.comment.empty}">No comments yet!</div>
-          <div class="w3-container">
-              <span th:each="comment: ${photo.comment}">
-                  <div class="w3-container">
-                  <p th:text="${comment.content}"></p>
-                  <a th:href="@{/profile/{username}(username=${comment.username})}" th:text="${comment.username}"></a><span th:text="' @ ' + ${comment.date} + ' ' + ${comment.time}"></span>
-                  </div>
-              </span>
-          </div>
-          
-          <div>
-              <p>Add a comment</p>
-              <form th:action="@{/profile/{username}/img/{id}/comment(username=${user.username}, id=${photo.id})}" method="post">
-                  <input type="text" placeholder="Write a comment.." name="comment"/> 
-                  <button type="submit">Comment</button>
-              </form>
-          </div>
-          <hr>
-               
-                  
-        </tr>
-        
-    </div>
-                 
       </div>
     </div>
-
-    <!-- End Right Column -->
-    <button class="open-button w3-right" onclick="openForm()">Upload image(s)</button>
-  <div class="form-popup w3-right" id="newPost">
-  <form th:action="@{/profile/{username}/album/(username=${user.username})}" class="form-container" enctype="multipart/form-data" method="post">
-    <h1>Upload image(s)</h1>
-
-    <label for="image"><b>Image</b></label>
-    <input type="file" placeholder="" name="file" required>
-
-    <label for="psw"><b>Story</b></label>
-    <input type="text" placeholder="Say something about the image.." name="story" required>
-
-    <button type="submit" class="btn">Send</button>
-    <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
-  </form>
-</div>
-    </div>
-    
-  <!-- End Grid -->
-  
-  </div>
-  
-  <!-- End Page Container -->
-  
-</div>
-  
-<footer class="w3-container w3-red w3-center w3-margin-top">
-    <p></p>
-</footer>
-
-<script>
-function openForm() {
-  document.getElementById("newPost").style.display = "block";
-}
-
-function closeForm() {
-  document.getElementById("newPost").style.display = "none";
-}
-
-</script>
-
-</body>
+    <script
+      src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+      integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+      integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+      integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+      crossorigin="anonymous"
+    ></script>
+  </body>
 </html>

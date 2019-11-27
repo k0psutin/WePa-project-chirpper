@@ -2,6 +2,7 @@ package projekti.model;
 
 import javax.persistence.*;
 import lombok.*;
+
 import org.springframework.data.jpa.domain.AbstractPersistable;
 
 @Data

@@ -11,4 +11,5 @@ public interface FollowRepository extends JpaRepository<Follow, Long> {
 
     List<Follow> findAllByUserOrderByDate(Account user);
 
+    List<Follow> findByFollowing(Account following);
 }

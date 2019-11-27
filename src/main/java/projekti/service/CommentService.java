@@ -8,14 +8,19 @@ import org.springframework.stereotype.Service;
 import projekti.model.*;
 import projekti.repository.*;
 
+import java.util.*;
+
 @Service
 public class CommentService {
 
         @Autowired
-        private PostCommentRepository commentRepository;
+        private PostCommentRepository postCommentRepository;
 
         @Autowired
         private PostRepository postRepository;
+
+        @Autowired
+        private AccountService accountService;
 
         public void createComment(Long id, String comment, Account user) {
                 if (comment.length() == 0) {
@@ -31,9 +36,6 @@ public class CommentService {
                 cmt.setDate(LocalDate.now().format(formatter2));
                 cmt.setUser(user);
                 cmt.setPost(post);
-                post.getComment().add(cmt);
-
-                commentRepository.save(cmt);
-                postRepository.save(post);
+                postCommentRepository.save(cmt);
         }
 }

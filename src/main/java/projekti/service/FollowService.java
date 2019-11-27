@@ -19,14 +19,14 @@ public class FollowService {
     @Autowired
     private AccountService accountService;
 
+    // Ohjaa tänne feedissä tykkäämiset, ettei palaa profiiliin..
+    // Ja pitäisi varmaan tehdä JS:llä tykkäys?
+
     public void followUser(String user) {
         Account current = accountService.getCurrentUser();
         Account toFollow = accountService.getAccount(user);
 
         List<Follow> follows = followRepository.findByUserAndFollowing(current, toFollow);
-
-        // Tarkistus taitaa toimia nyt niin, että ei voi lisätä kuin kerran jos
-        // tykkäys löytyy listalta...
 
         Boolean ifUserMatch = follows.stream()
                 .anyMatch(follow -> follow.getUser().equals(current) && follow.getFollowing().equals(toFollow));
@@ -37,7 +37,7 @@ public class FollowService {
         // System.out.println("ifUserMatch: " + ifUserMatch + " ifFollowerMatch: " +
         // ifFollowerMatch);
 
-        // Jos ifUserMatch ja ifFollowerMatch molemmat on false, niin lisätään uusi..
+        // Jos käyttäjä seuraa jo henkilöä, ei tapahdu mitään..
         if (!ifUserMatch) {
             Follow follow = new Follow();
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
@@ -49,11 +49,18 @@ public class FollowService {
             follow.setBlocked(false);
 
             followRepository.save(follow);
-        } else
+        } else {
+            // Tähän joku errori että voi näyttää sivuilla?
             System.out.println("Ei lisätä, löytyy jo");
+        }
+
     }
 
-    public List<Follow> getFollows(Account account) {
+    public List<Follow> getFollowingUser(Account account) {
+        return followRepository.findByFollowing(account);
+    }
+
+    public List<Follow> getFollowsByUser(Account account) {
         return followRepository.findAllByUser(account);
     }
 

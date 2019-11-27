@@ -24,7 +24,7 @@ public class AlbumController {
 
     @GetMapping("/profile/{username}/album")
     public String photoAlbum(Model model, @PathVariable String username) {
-        model.addAttribute("album", photoService.getPhotos(username));
+        model.addAttribute("photos", photoService.getPhotos(username));
         model.addAttribute("user", accountService.getAccount(username));
         return "album";
     }
@@ -59,7 +59,7 @@ public class AlbumController {
     }
 
     @PostMapping("/profile/{username}/album")
-    public String fetchPhotos(Model model, @RequestParam String story, @PathVariable String username,
+    public String uploadPhoto(Model model, @RequestParam String story, @PathVariable String username,
             @RequestParam("file") MultipartFile file) throws IOException {
         photoService.uploadPhoto(username, story, file);
         model.addAttribute("user", accountService.getAccount(username));

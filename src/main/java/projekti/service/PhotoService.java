@@ -37,16 +37,21 @@ public class PhotoService {
     }
 
     public boolean uploadPhoto(String username, String story, MultipartFile file) throws IOException {
-        Account acc = accountService.getAccount(username);
+        Account acc = accountService.getCurrentUser();
         List<Photo> photos = photoRepository.findAllByAccountUsername(username);
-        if (!file.getContentType().contains("image") || file.getSize() == 0 || photos.size() <= 10) {
+
+        if (!username.equals(acc.getUsername()) | !file.getContentType().contains("image") || file.getSize() == 0
+                || photos.size() > 9) {
+            System.out.println("Ei lisätä");
             return false;
         }
+
         Photo photo = new Photo();
         photo.setStory(story);
         photo.setContent(file.getBytes());
         photo.setAccount(acc);
         photoRepository.save(photo);
+        System.out.println("Tallennettu");
         return true;
     }
 }

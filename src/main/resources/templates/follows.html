@@ -21,7 +21,7 @@
     <title>Chirpper</title>
   </head>
   <body>
-    <div class="container-fluid">
+    <div class="container">
       <nav
         class="navbar navbar-expand-sm navbar-dark"
         style="background-color:darkred;"
@@ -46,7 +46,7 @@
         <div class="collapse navbar-collapse" id="collapsibleNavId">
           <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
             <li class="nav-item">
-              <a class="nav-link" href="#">Feed</a>
+              <a class="nav-link" th:href="@{/profile/feed}">Feed</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" th:href="@{/profile/}">Profile</a>
@@ -78,7 +78,6 @@
           </form>
         </div>
       </nav>
-      <div class="container-fluid">
         <div class="row">
           <div class="col-sm-3">
             <!-- Profile picture start -->
@@ -97,7 +96,7 @@
                   alt="avatar"
               /></span>
             </div>
-            <!-- Profile picture end -->
+            <!-- Profile picture END -->
             <p class="text-muted text-center">
               <span th:text="${user.firstName} + ' ' + ${user.lastName}">
                 Firstname Lastname
@@ -109,7 +108,7 @@
                 ></a>
               </span>
             </p>
-            <!-- User album button start -->
+            <!-- User album button START -->
             <div class="container text-center">
               <a
                 th:href="@{/profile/{username}/album(username=${user.username})}"
@@ -118,25 +117,46 @@
                 ><small>User album</small></a
               >
             </div>
-            <!-- User album button end -->
+            <!-- User album button END -->
           </div>
+          <!-- Following users list START -->
           <div class="col-sm container-fluid text-center">
             <h4>Following:</h4>
+            <tr th:each="follow: ${following}">
+              <div class="col-sm">
+                <h5>
+                  <a
+                    style="color:darkred;"
+                    th:href="@{/profile/{username}(username=${follow.user.username})}"
+                    class="text-center"
+                    th:text="${follow.following.username}"
+                    >Following users
+                  </a>
+                </h5>
+              </div>
+            </tr>
+          </div>
+
+          <!-- Following users list END -->
+          <!-- Users following you list START -->
+          <div class="col-sm container-fluid text-center">
+            <h4>Following you:</h4>
             <tr th:each="follower: ${follows}">
               <div class="col-sm">
                 <h5>
                   <a
                     style="color:darkred;"
-                    th:href="@{/profile/{username}(username=${follower.following.username})}"
+                    th:href="@{/profile/{username}(username=${follower.user.username})}"
                     class="text-center"
-                    th:text="${follower.following.username}"
-                    >aaa
+                    th:text="${follower.user.username}"
+                    >Users following you
                   </a>
-                  <button class="btn btn-danger">Block user</button>
                 </h5>
               </div>
             </tr>
           </div>
+
+          <!-- Users following you list END -->
         </div>
       </div>
     </div>

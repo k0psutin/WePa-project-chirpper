@@ -3,9 +3,6 @@ package projekti.service;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import projekti.model.Post;
 import projekti.repository.PostRepository;
@@ -13,7 +10,6 @@ import java.util.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import projekti.model.Account;
-import projekti.repository.AccountRepository;
 
 @Service
 public class PostService {
@@ -42,6 +38,10 @@ public class PostService {
 
     public List<Post> getUserFeed(long id) {
         return postRepository.getUserFeed(id);
+    }
+
+    public Post getPostById(long id) {
+        return postRepository.getOne(id);
     }
 
     public void likeAPost(Long id) {
