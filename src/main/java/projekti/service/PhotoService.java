@@ -23,7 +23,7 @@ public class PhotoService {
         return photoRepository.findAllByAccountUsername(username);
     }
 
-    @Transactional(readOnly = true)
+    @Transactional
     public Photo getPhoto(Long id) {
         return photoRepository.getOne(id);
     }
@@ -41,10 +41,10 @@ public class PhotoService {
     @Transactional
     public boolean uploadPhoto(String username, String story, MultipartFile file) throws IOException {
         Account acc = accountService.getCurrentUser();
-        List<Photo> photos = photoRepository.findAllByAccountUsername(username);
+        long count = photoRepository.count();
 
         if (!username.equals(acc.getUsername()) | !file.getContentType().contains("image") || file.getSize() == 0
-                || photos.size() > 9) {
+                || count > 9) {
             System.out.println("Ei lisätä");
             return false;
         }
