@@ -3,6 +3,8 @@ package projekti.service;
 import java.io.IOException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.*;
 import org.springframework.web.multipart.MultipartFile;
 import projekti.model.*;
@@ -21,6 +23,7 @@ public class PhotoService {
         return photoRepository.findAllByAccountUsername(username);
     }
 
+    @Transactional(readOnly = true)
     public Photo getPhoto(Long id) {
         return photoRepository.getOne(id);
     }
@@ -34,6 +37,8 @@ public class PhotoService {
         }
     }
 
+    // ei toimi herokussa, lisäsin Transactional jos toimis...
+    @Transactional
     public boolean uploadPhoto(String username, String story, MultipartFile file) throws IOException {
         Account acc = accountService.getCurrentUser();
         List<Photo> photos = photoRepository.findAllByAccountUsername(username);
