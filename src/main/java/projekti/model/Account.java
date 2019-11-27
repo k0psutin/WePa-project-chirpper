@@ -13,8 +13,8 @@ public class Account extends AbstractPersistable<Long> {
 
     @Column(unique = true)
     private String username;
-    private String firstname;
-    private String lastname;
+    private String firstName;
+    private String lastName;
     private String password;
 
     private Long profilePicId;

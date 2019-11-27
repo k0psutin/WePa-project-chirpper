@@ -5,6 +5,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import projekti.model.*;
 import projekti.repository.*;
 
@@ -39,16 +41,16 @@ public class AccountService {
         return acc;
     }
 
+    @Transactional
     public void createAccount(String username, String password, String firstName, String lastName) {
         try {
             BCryptPasswordEncoder pswEncoder = new BCryptPasswordEncoder();
             String psw = pswEncoder.encode(password);
             Account account = new Account();
             account.setUsername(username);
-            account.setFirstname(firstName);
-            account.setLastname(lastName);
+            account.setFirstName(firstName);
+            account.setLastName(lastName);
             account.setPassword(psw);
-            accountRepository.save(account);
             System.out.println("Pitäisi tallentaa");
         } catch (Exception e) {
             System.out.println(e.getStackTrace());
