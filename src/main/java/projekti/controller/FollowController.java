@@ -27,6 +27,9 @@ public class FollowController {
     public String userFeed(Model model) {
         Account acc = accountService.getCurrentUser();
         List<Post> posts = postService.getUserFeed(acc.getId());
+        if (posts.isEmpty()) {
+            posts = postService.getPosts(acc);
+        }
         model.addAttribute("user", acc);
         model.addAttribute("posts", posts);
         return "feed";

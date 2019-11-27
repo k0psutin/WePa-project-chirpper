@@ -4,11 +4,11 @@ import java.time.*;
 import java.time.format.DateTimeFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import projekti.model.Post;
 import projekti.repository.PostRepository;
 import java.util.*;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import projekti.model.Account;
 
 @Service
@@ -20,12 +20,14 @@ public class PostService {
     @Autowired
     private AccountService accountService;
 
+    @Transactional
     public void createPost(String username, String content) {
-        if (username.length() == 0 | content.length() == 0) {
+        Account acc = accountService.getCurrentUser();
+
+        if (!acc.getUsername().equals(username) | username.length() == 0 | content.length() == 0) {
             return;
         }
         System.out.println(LocalDateTime.now());
-        Account acc = accountService.getAccount(username);
         Post post = new Post();
         post.setAccount(acc);
         post.setContent(content);
@@ -44,12 +46,12 @@ public class PostService {
         return postRepository.getOne(id);
     }
 
+    @Transactional
     public void likeAPost(Long id) {
+        Account acc = accountService.getCurrentUser();
         Post post = postRepository.getOne(id);
         System.out.println("Post id: " + id);
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String username = auth.getName();
-        Account acc = accountService.getAccount(username);
+
         if (!post.getLikes().contains(acc)) {
             post.getLikes().add(acc);
             postRepository.save(post);

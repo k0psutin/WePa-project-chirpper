@@ -5,6 +5,8 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import projekti.model.*;
 import projekti.repository.*;
 
@@ -17,6 +19,7 @@ public class CommentService {
         @Autowired
         private PostRepository postRepository;
 
+        @Transactional
         public void createComment(Long id, String comment, Account user) {
                 if (comment.length() == 0) {
                         return;

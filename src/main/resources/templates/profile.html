@@ -24,97 +24,14 @@
     <title>Chirpper</title>
   </head>
   <body>
-    <div class="container">
-    <nav
-      class="navbar navbar-expand-sm navbar-dark"
-      style="background-color:darkred;"
-    >
-      <img
-        src="../public/img/cartoon-bird-hi.png"
-        width="3%"
-        height="3%"
-        alt=""
-        th:src="@{../img/cartoon-bird-hi.png}"
-      />
-      <a class="navbar-brand" href="#">Chirpper</a>
-      <button
-        class="navbar-toggler d-lg-none"
-        type="button"
-        data-toggle="collapse"
-        data-target="#collapsibleNavId"
-        aria-controls="collapsibleNavId"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
-      ></button>
-      <div class="collapse navbar-collapse" id="collapsibleNavId">
-        <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-          <li class="nav-item">
-            <a class="nav-link" th:href="@{/profile/feed}">Feed</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" th:href="@{/profile/}">Profile</a>
-          </li>
-          <li class="nav-item">
-              <a class="nav-link" th:href="@{/profile/follows}">Following</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Notifications</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" th:href="@{/logout}">Logout</a>
-          </li>
-        </ul>
-        <form th:action="@{/profile/search/}" method="post" class="form-inline my-2 my-lg-0">
-          <input
-            class="form-control mr-sm-2"
-            type="text"
-            placeholder="Search for users..."
-            name="user"
-          />
-          <button class="btn btn-outline-danger my-2 my-sm-0" type="submit">
-            Search
-          </button>
-        </form>
-      </div>
-    </nav>
-    <div >
-      <div class="row">
-        <div class="col-sm-3">
-          <!-- Profile picture start -->
-          <div class="card border-light">
-              <span th:if="${user.profilePicId} == null"
-              ><img
-                class="card-img-top"
-                src="../public/img/cartoon-bird-hi.png"
-                th:src="@{/img/cartoon-bird-hi.png}"
-                alt="avatar"
-            /></span>
-            <span th:unless="${user.profilePicId} == null"
-              ><img
-                class="card-img-top"
-                th:src="@{/profile/img/{id}(id=${user.profilePicId})}"
-                alt="avatar"
-            /></span>
+      <div class="container">
+     <header th:replace="fragments/nav :: navbar">
+    </header>
+        <div class="row">
+            <div class="col-sm-3">
+              <div th:replace="fragments/avatar :: avatar"></div>
             </div>
-          <!-- Profile picture end -->
-          <p class="text-muted text-center">
-          <span
-            
-            th:text="${user.firstName} + ' ' + ${user.lastName}"
-          >
-            Firstname Lastname
-            </span>
-            <span th:unless="${#strings.equals(current, user.username)}">
-              <a th:href="@{/profile/{username}/follow(username=${user.username})}"><i class="fas fa-user-plus" style="color:darkred;"></i></a>
-            </span>
-          </p> 
-          <!-- User album button start -->
-          <div class="container text-center">
-                <a th:href="@{/profile/{username}/album(username=${user.username})}" type="button" class="btn btn-danger"><small>User album</small></a>
-          </div>
-          <!-- User album button end -->
-        </div>
-        <div class="col">
+            <div class="col-sm">
           <br>
           <h4 class="container text-center" th:unless="${#strings.equals(current, user.username)}">
             <span th:text="${user.username}"></span><small>'s wall of Chirps!</small>
@@ -128,25 +45,6 @@
           <!-- New post start -->
           <div class="card text-left"  th:if="${#strings.equals(current, user.username)}">
             <div class="card-body">
-              <!-- Tarviiko profiilikuvaa tässä?
-              <span th:if="${user.profilePicId} == null"
-                ><img
-                  class="card-img-thumbnail"
-                  src="../public/img/no-profile-picture.jpg"
-                  th:src="@{/img/no-profile-picture.jpg}"
-                  alt=""
-                  width="10%"
-                  height="10%"
-              /></span>
-              <span th:unless="${user.profilePicId} == null"
-                ><img
-                  class="card-img-thumbnail"
-                  th:src="@{/profile/img/{id}(id=${user.profilePicId})}"
-                  alt=""
-                  width="10%"
-                  height="10%"
-              /></span>
-              -->
               <div class="form-group">
                 <form th:action="@{/profile/{username}/post/(username=${user.username})}" class="form-container" method="post">
                   <div class="input-group mb-3">
@@ -167,129 +65,7 @@
           </div>
           <!-- New post end -->
           <!-- Defaul message for no posts -->
-          <div th:if="${posts.empty}">
-            <div>
-              <br />
-              <div class="card">
-                <div class="card-body">
-                  No chirps yet, i hope we hear you singing soon!
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- Default message end -->
-          <!-- Post start -->
-            
-            <div th:unless="${posts.empty}">
-              <div th:each="post: ${posts}">
-                  <br />
-                  <div class="card">
-                    <div class="card-header">
-                      
-                        <span
-                          class="text"
-                          th:text="${user.firstName} + ' ' + ${user.lastName}"
-                          >Username</span
-                        >
-                        <small
-                          ><span th:text="'@' + ${user.username}"
-                            >username</span
-                          ></small
-                        >
-                        <span
-                          class="text float-right"
-                          th:text="${post.date} + ' ' + ${post.time}"
-                        >
-                          11:54</span
-                        >
-                      </div>
-                    <div class="card-body">
-                      <p class="card-text" th:text="${post.content}">
-                        Enter some text here
-                      </p>
-                      <a
-                        th:href="@{/profile/{username}/post/{id}/like(id=${post.id}, username=${user.username})}"
-                        ><i class="fas fa-heart" style="color:red"> </i></a
-                      ><span th:text="' ' + ${#lists.size(post.likes)}">0</span>
-                    </div>
-                    
-                    <!-- No comments default start -->
-                    <div
-                      class="card-footer bg-white"
-                      th:if="${post.comment.empty}"
-                    >
-                      No tweetback yet!
-                    </div>
-                    <!-- No comments default end -->
-                    <!-- Comments start -->
-                    <div
-                      class="card-footer bg-white"
-                      th:unless="${post.comment.empty}"
-                    >
-                      <div th:each="comment : ${post.comment}">
-                        <div>
-                            <div>
-                                 <span th:if="${comment.user.profilePicId} == null"
-                                ><img
-                                class="card-img-thumbnail float-left"
-                                style="contain:none; object-fit:cover; width: 5vh; height: 5vh;"
-                                src="../public/img/cartoon-bird-hi.png"
-                                th:src="@{/img/cartoon-bird-hi.png}"
-                                  width="10%"
-                           
-                              /></span>
-                              <span th:unless="${comment.user.profilePicId} == null"
-                                ><img
-                                class="card-img-thumbnail rounded-circle float-left"
-                                style="contain:none; object-fit:cover; width: 5vh; height: 5vh;"
-                                  th:src="@{/profile/img/{id}(id=${comment.user.profilePicId})}"
-                                  alt="avatar"
-                              /></span>
-                          <small
-                            ><a style="color:darkred;" class="nav-link active" th:href="@{/profile/{username}(username=${comment.user.username})}" th:text="'@' + ${comment.user.username}"
-                              >username</a
-                            >
-                            <span
-                              class="text float-right"
-                              th:text="${comment.date} + ' ' + ${comment.time}"
-                            >
-                              11:54</span
-                            >
-                          </small>
-                        </div>
-                            <p class="container" th:text="${comment.content}">
-                                comment
-                              </p>
-                            <!-- Comments end -->
-                        
-                    
-                      </div>
-                      
-                    </div>
-                    
-                   
-                    
-                  </div>
-                    
-                  <!-- Make a comment start -->
-                    
-                  <div class="card-footer bg-white">
-                      <span class="text text-muted">Add a tweet</span>
-                      <div class="form-group">
-                        <form
-                          th:action="@{/profile/{username}/post/{id}/comment(username=${user.username}, id=${post.id})}"
-                          method="post"
-                        >
-                          <div class="input-group mb-3">
-                            <input type="text" name="comment" id="comment" class="form-control" placeholder="Your tweetback..." aria-label="Recipient's username" aria-describedby="basic-addon2">
-                            <div class="input-group-append">
-                              <button class="btn btn-danger" type="submit">Tweet</button>
-                            </div>
-                          </div>
-                        </form>
-                      </div>
-                    </div>
-                    <!-- Make a comment end -->
+          <div  th:replace="fragments/card :: card"></div>
               </div>
             </div>
         </div>

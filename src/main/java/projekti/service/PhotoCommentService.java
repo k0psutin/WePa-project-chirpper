@@ -4,6 +4,8 @@ import java.time.*;
 import java.time.format.DateTimeFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import projekti.model.*;
 import projekti.repository.*;
 
@@ -19,8 +21,9 @@ public class PhotoCommentService {
         @Autowired
         private AccountService accountService;
 
+        @Transactional
         public void createComment(Long id, String comment, String user) {
-                Account acc = accountService.getAccount(user);
+                Account acc = accountService.getCurrentUser();
                 PhotoComment cmt = new PhotoComment();
                 Photo photo = photoRepository.getOne(id);
 

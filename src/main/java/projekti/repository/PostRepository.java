@@ -15,7 +15,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
     @Query(value = "SELECT * FROM POST "
             + "WHERE ACCOUNT_ID IN (SELECT Follow_user_id FROM FOLLOW WHERE User_id = :id) "
-            + "OR ACCOUNT_ID IN (SELECT user_id FROM FOLLOW WHERE User_id = :id) " + "ORDER BY DATE, TIME DESC "
+            + "OR ACCOUNT_ID IN (SELECT user_id FROM FOLLOW WHERE User_id = :id) " + "ORDER BY TIME, DATE ASC "
             + "LIMIT 25", nativeQuery = true)
     List<Post> getUserFeed(@Param("id") long id);
 }

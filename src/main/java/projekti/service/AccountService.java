@@ -26,6 +26,7 @@ public class AccountService {
         return getAccount(currentUser);
     }
 
+    @Transactional
     public void saveAccount(Account acc) {
         try {
             accountRepository.save(acc);
@@ -52,7 +53,6 @@ public class AccountService {
             account.setLastName(lastName);
             account.setPassword(psw);
             accountRepository.save(account);
-            System.out.println("Pitäisi tallentaa");
         } catch (Exception e) {
             System.out.println(e.getStackTrace());
             System.out.println(e.getMessage());

@@ -22,102 +22,10 @@
   </head>
   <body>
     <div class="container">
-      <nav
-        class="navbar navbar-expand-sm navbar-dark"
-        style="background-color:darkred;"
-      >
-        <img
-          src="../public/img/cartoon-bird-hi.png"
-          width="3%"
-          height="3%"
-          alt=""
-          th:src="@{../public/img/cartoon-bird-hi.png}"
-        />
-        <a class="navbar-brand" href="#">Chirpper</a>
-        <button
-          class="navbar-toggler d-lg-none"
-          type="button"
-          data-toggle="collapse"
-          data-target="#collapsibleNavId"
-          aria-controls="collapsibleNavId"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        ></button>
-        <div class="collapse navbar-collapse" id="collapsibleNavId">
-          <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-            <li class="nav-item">
-              <a class="nav-link" th:href="@{/profile/feed}">Feed</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" th:href="@{/profile/}">Profile</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" th:href="@{/profile/follows}">Following</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Notifications</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" th:href="@{/logout}">Logout</a>
-            </li>
-          </ul>
-          <form
-            th:action="@{/profile/search/}"
-            method="post"
-            class="form-inline my-2 my-lg-0"
-          >
-            <input
-              class="form-control mr-sm-2"
-              type="text"
-              placeholder="Search for users..."
-              name="user"
-            />
-            <button class="btn btn-outline-danger my-2 my-sm-0" type="submit">
-              Search
-            </button>
-          </form>
-        </div>
-      </nav>
+      <div th:replace="fragments/nav :: navbar"></div>
       <div class="row">
         <div class="col-sm-3">
-          <!-- Profile picture start -->
-          <div class="card border-light">
-            <span th:if="${user.profilePicId} == null"
-              ><img
-                class="card-img-top"
-                src="../public/img/cartoon-bird-hi.png"
-                th:src="@{/img/cartoon-bird-hi.png}"
-                alt="avatar"
-            /></span>
-            <span th:unless="${user.profilePicId} == null"
-              ><img
-                class="card-img-top"
-                th:src="@{/profile/img/{id}(id=${user.profilePicId})}"
-                alt="avatar"
-            /></span>
-          </div>
-          <!-- Profile picture end -->
-          <p class="text-muted text-center">
-            <span th:text="${user.firstName} + ' ' + ${user.lastName}">
-              Firstname Lastname
-            </span>
-            <span th:unless="${#strings.equals(current, user.username)}">
-              <a
-                th:href="@{/profile/{username}/follow(username=${user.username})}"
-                ><i class="fas fa-user-plus" style="color:darkred;"></i
-              ></a>
-            </span>
-          </p>
-          <!-- User album button start -->
-          <div class="container text-center">
-            <a
-              th:href="@{/profile/{username}/album(username=${user.username})}"
-              type="button"
-              class="btn btn-danger"
-              ><small>User album</small></a
-            >
-          </div>
-          <!-- User album button end -->
+          <div th:replace="fragments/avatar :: avatar"></div>
         </div>
         <div class="col-sm container-fluid text-center">
           <div class="container">
