@@ -32,13 +32,17 @@
             <br />
 
             <h5 th:unless="${#strings.equals(current, user.username)}">
-              <span th:text="${user.username}"></span>'s famous photos!
+                <span th:unless="${photos.empty}"> 
+                  <span th:text="${user.username}"></span>'s famous photos!</span>
+             <span th:if="${photos.empty}"> 
+               <span th:text="${user.username}"></span> has no photos...</span>
             </h5>
             <div th:if="${#strings.equals(current, user.username)}">
-              <h5>
-                Your gallery looks empty, upload some photos!
-              </h5>
-              <br />
+              <div  th:unless="${photos.empty}"><h5>
+                  Upload some more pictures!
+                </h5>
+                <br /></div>
+              <span th:if="${photos.empty}"><h5>Your gallery looks empty, upload some photos!</h5> </span>
             </div>
             <div
               class="form-group"
@@ -96,11 +100,13 @@
                   </p>
                   <p class="card-text" th:text="${photo.story}">Text</p>
                   <p class="card-text">
-                    <a
+                   <div  th:unless="${#strings.equals(current, user.username)}">
+                      <a
                       style="color:darkred;"
                       th:href="@{/profile/{username}/profile_pic/{id}(id=${photo.id}, username=${user.username})}"
                       ><small>Set this photo as your profile picture!</small></a
                     >
+                   </div>
                   </p>
                 </div>
                 <!-- No comments default start -->

@@ -26,8 +26,11 @@ public class AlbumController {
 
     @GetMapping("/profile/{username}/album")
     public String photoAlbum(Model model, @PathVariable String username) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String current = auth.getName();
         model.addAttribute("photos", photoService.getPhotos(username));
         model.addAttribute("user", accountService.getAccount(username));
+        model.addAttribute("current", current);
         return "album";
     }
 

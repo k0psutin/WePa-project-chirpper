@@ -5,10 +5,7 @@
     <!-- Required meta tags -->
     <meta charset="utf-8" />
     <!-- Removed ', shrink-to-fit=no' from meta -->
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1"
-    />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <!-- Bootstrap CSS -->
     <link
@@ -25,21 +22,19 @@
   </head>
   <body>
     <div class="container">
-        <header th:replace="fragments/nav :: navbar">
-          <title>Chirpper!</title>
-          </header>
-    <div>
-          <br>
-          <h4 class="text-center">
-            <small></small>
-            <small>Chirps from the flock!</small>
-          </h4>
-          <br />
-          <div th:replace="fragments/cardpic :: cardpic"></div>
-        </div>
+      <header th:replace="fragments/nav :: navbar">
+        <title>Chirpper!</title>
+      </header>
+      <div>
+        <br />
+        <h4 class="text-center">
+          <small></small>
+          <small>Chirps from the flock!</small>
+        </h4>
+        <br />
+        <div th:replace="fragments/posts :: posts(true)"></div>
       </div>
     </div>
-  </div>
     <script
       src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
       integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"

@@ -5,7 +5,7 @@
     <title>Layout</title>
   </head>
   <body>
-    <div th:fragment="card">
+    <div th:fragment="posts(show)">
             <div th:if="${posts.empty}">
                     <div>
                       <br />
@@ -24,14 +24,32 @@
                           <br />
                           <div class="card">
                             <div class="card-header">
-                              
+                                <span th:if="${post.account.profilePicId} == null and ${show == true}"
+                                ><img
+                                  class="card-img-thumbnail"
+                                  style="width: 5vh; height: auto;"
+                                  src="../public/img/cartoon-bird-hi.png"
+                                  th:src="@{/img/cartoon-bird-hi.png}"
+                                  alt=""
+                                  width="5%"
+                                  height="5%"
+                              /></span>
+                              <span th:unless="${post.account.profilePicId} == null and ${show == true}"
+                                ><img
+                                  class="card-img-thumbnail rounded-circle"
+                                  style="contain:none; object-fit:cover; width: 5vh; height: 5vh;"
+                                  th:src="@{/profile/img/{id}(id=${post.account.profilePicId})}"
+                                  alt=""
+                                  width="10%"
+                                  height="10%"
+                              /></span>
                                 <span
                                   class="text"
-                                  th:text="${user.firstName} + ' ' + ${user.lastName}"
+                                  th:text="${post.account.firstName} + ' ' + ${post.account.lastName}"
                                   >Username</span
                                 >
                                 <small
-                                  ><span th:text="'@' + ${user.username}"
+                                  ><span th:text="'@' + ${post.account.username}"
                                     >username</span
                                   ></small
                                 >

@@ -21,13 +21,13 @@
   </head>
   <body>
     <div class="container">
-        <header th:replace="fragments/nav :: navbar">
-          <title>Chirpper!</title>
-          </header>
-                 <div class="row">
-                     <div class="col-sm-3">
-                       <div th:replace="fragments/avatar :: avatar"></div>
-                     </div>
+      <header th:replace="fragments/nav :: navbar">
+        <title>Chirpper!</title>
+      </header>
+      <div class="row">
+        <div class="col-sm-3">
+          <div th:replace="fragments/avatar :: avatar"></div>
+        </div>
           <div class="col-sm text-center">
             <h4>Following:</h4>
             <tr th:each="follow: ${following}">
