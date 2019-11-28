@@ -42,6 +42,10 @@ public class AccountService {
         return acc;
     }
 
+    public boolean userExists(String username) {
+        return (accountRepository.findByUsername(username) == null);
+    }
+
     @Transactional
     public void createAccount(String username, String password, String firstName, String lastName) {
         try {

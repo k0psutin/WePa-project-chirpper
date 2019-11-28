@@ -41,9 +41,8 @@ public class PostController {
         return "redirect:/profile/{username}";
     }
 
-    @PostMapping("/profile/feed/{username}/comment/{id}")
-    public String addFeedComment(Model model, @PathVariable String username, @PathVariable Long id,
-            @RequestParam String comment) {
+    @PostMapping("/profile/feed/post/comment/{id}")
+    public String addFeedComment(Model model, @PathVariable Long id, @RequestParam String comment) {
         Account user = accountService.getCurrentUser();
         commentService.createComment(id, comment, user);
         return "redirect:/profile/feed";

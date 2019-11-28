@@ -27,4 +27,6 @@ public class Post extends AbstractPersistable<Long> {
     @OneToMany(mappedBy = "post")
     private List<PostComment> comment = new ArrayList<>();
 
+    // Ehkä pagedlistholderia vois kutsua täällä vaihtamaan sivuja??
+    // Esim PagedListHolder<Post> getComments(int page) ?
 }

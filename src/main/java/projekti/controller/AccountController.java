@@ -46,6 +46,11 @@ public class AccountController {
 
     @PostMapping("/profile/search")
     private String findUser(RedirectAttributes redirectAttributes, @RequestParam String user) {
+        // Tähän joku virheilmoitus että ei löydy käyttäjää x
+        if (accountService.userExists(user)) {
+            return "redirect:/profile/";
+        }
+
         redirectAttributes.addAttribute("user", user);
         return "redirect:/profile/{user}";
     }
