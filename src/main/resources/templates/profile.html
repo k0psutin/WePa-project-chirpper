@@ -24,12 +24,12 @@
     <title>Chirpper</title>
   </head>
   <body>
-      <div class="container">
+      <div class="container" th:if="${user} != null">
      <header th:replace="fragments/nav :: navbar">
     </header>
         <div class="row">
             <div class="col-sm-3">
-              <div th:replace="fragments/avatar :: avatar"></div>
+              <div th:replace="fragments/avatar :: avatar(user=${user})"></div>
             </div>
             <div class="col-sm">
           <br>

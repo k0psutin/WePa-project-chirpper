@@ -1,6 +1,10 @@
 package projekti.model;
 
+import java.time.LocalDateTime;
+
 import javax.persistence.*;
+import javax.validation.constraints.*;
+
 import lombok.*;
 
 import org.springframework.data.jpa.domain.AbstractPersistable;
@@ -11,9 +15,10 @@ import org.springframework.data.jpa.domain.AbstractPersistable;
 @Entity
 public class PostComment extends AbstractPersistable<Long> {
 
+    @Size(min = 3, max = 50)
     private String content;
-    private String time;
-    private String date;
+
+    private LocalDateTime dateTime;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")

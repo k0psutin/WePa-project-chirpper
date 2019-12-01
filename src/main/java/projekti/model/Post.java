@@ -1,10 +1,12 @@
 package projekti.model;
 
+import java.time.LocalDateTime;
 import java.util.*;
 import javax.persistence.*;
 import lombok.*;
 
 import org.springframework.data.jpa.domain.AbstractPersistable;
+import javax.validation.constraints.*;
 
 @Data
 @NoArgsConstructor
@@ -16,10 +18,10 @@ public class Post extends AbstractPersistable<Long> {
     @JoinColumn(name = "account_id")
     private Account account;
 
-    private String subject;
+    @Size(min = 3, max = 50)
     private String content;
-    private String date;
-    private String time;
+
+    private LocalDateTime dateTime;
 
     @ManyToMany
     private List<Account> likes = new ArrayList<>();

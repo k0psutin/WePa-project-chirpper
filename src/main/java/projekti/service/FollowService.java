@@ -22,14 +22,15 @@ public class FollowService {
     // Ohjaa tänne feedissä tykkäämiset, ettei palaa profiiliin..
     // Ja pitäisi varmaan tehdä JS:llä tykkäys?
 
+    public Boolean doesUserFollow(Account current, Account toFollow) {
+        return !followRepository.findByUserAndFollowing(current, toFollow).stream()
+                .anyMatch(follow -> follow.getUser().equals(current) && follow.getFollowing().equals(toFollow));
+    }
+
     public void followUser(String user) {
         Account current = accountService.getCurrentUser();
         Account toFollow = accountService.getAccount(user);
 
-        List<Follow> follows = followRepository.findByUserAndFollowing(current, toFollow);
-
-        Boolean ifUserMatch = follows.stream()
-                .anyMatch(follow -> follow.getUser().equals(current) && follow.getFollowing().equals(toFollow));
         // Boolean ifFollowerMatch = follows.stream()
         // .anyMatch(follow -> follow.getUser().equals(toFollow) &&
         // follow.getFollowing().equals(current));
@@ -38,12 +39,9 @@ public class FollowService {
         // ifFollowerMatch);
 
         // Jos käyttäjä seuraa jo henkilöä, ei tapahdu mitään..
-        if (!ifUserMatch) {
+        if (doesUserFollow(current, toFollow)) {
             Follow follow = new Follow();
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
-            DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-            follow.setTime(LocalTime.now().format(formatter));
-            follow.setDate(LocalDate.now().format(formatter2));
+            follow.setDateTime(LocalDateTime.now());
             follow.setFollowing(toFollow);
             follow.setUser(current);
             follow.setBlocked(false);
@@ -65,7 +63,7 @@ public class FollowService {
     }
 
     public List<Follow> getFollowByOrder() {
-        return followRepository.findAllByUserOrderByDate(accountService.getCurrentUser());
+        return followRepository.findAllByUserOrderByDateTime(accountService.getCurrentUser());
     }
 
     public void blockFollower(String follower) {

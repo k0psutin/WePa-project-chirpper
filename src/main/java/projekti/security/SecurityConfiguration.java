@@ -22,9 +22,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
         http.headers().frameOptions().sameOrigin();
 
-        http.authorizeRequests().antMatchers("/h2-console", "/h2-console/**", "/login/create").permitAll()
+        String[] staticResources = { "/h2-console", "/h2-console/**", "/login/**", "/img/**" };
+
+        http.authorizeRequests().antMatchers(staticResources).permitAll().anyRequest().authenticated()
                 .antMatchers("/profile").hasAnyAuthority("USER").anyRequest().authenticated();
-        http.formLogin().permitAll();
+        http.formLogin().loginPage("/login").failureUrl("/login-error").and().logout()
+                .logoutSuccessUrl("/logout-success").permitAll();
     }
 
     @Autowired

@@ -20,13 +20,13 @@
     ></script>
   </head>
   <body>
-    <div class="container">
+    <div class="container" th:if="${user} != null">
       <header th:replace="fragments/nav :: navbar">
         <title>Chirpper!</title>
       </header>
       <div class="row">
         <div class="col-sm-3">
-          <div th:replace="fragments/avatar :: avatar"></div>
+          <div th:replace="fragments/avatar :: avatar(user=${user})"></div>
         </div>
           <div class="col-sm text-center">
             <h4>Following:</h4>
@@ -44,7 +44,7 @@
                   <p>
                     <small
                       ><span
-                        th:text="${follow.date} + ' ' + ${follow.time}"
+                      th:text="${#temporals.format(follow.dateTime, 'dd.MM.yyyy')} + ' ' + ${#temporals.format(follow.dateTime, 'HH:mm')}"
                       ></span
                     ></small>
                   </p>
@@ -71,7 +71,7 @@
                   <p>
                     <small
                       ><span
-                        th:text="${follower.date} + ' ' + ${follower.time}"
+                      th:text="${#temporals.format(follower.dateTime, 'dd.MM.yyyy')} + ' ' + ${#temporals.format(follower.dateTime, 'HH:mm')}"
                       ></span
                     ></small>
                   </p>

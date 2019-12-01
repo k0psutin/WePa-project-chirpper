@@ -28,10 +28,7 @@ public class PhotoCommentService {
                 Photo photo = photoRepository.getOne(id);
 
                 cmt.setContent(comment);
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
-                DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-                cmt.setTime(LocalTime.now().format(formatter));
-                cmt.setDate(LocalDate.now().format(formatter2));
+                cmt.setDateTime(LocalDateTime.now());
                 cmt.setUser(acc);
                 cmt.setPhoto(photo);
                 photo.getComment().add(cmt);

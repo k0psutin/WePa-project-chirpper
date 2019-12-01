@@ -1,6 +1,8 @@
 package projekti.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.*;
+
 import lombok.*;
 
 import org.hibernate.annotations.Type;
@@ -20,6 +22,7 @@ public class Photo extends AbstractPersistable<Long> {
     @JoinColumn(name = "account_id")
     private Account account;
 
+    @Size(min = 3, max = 30)
     private String story;
 
     @OneToMany(mappedBy = "photo")

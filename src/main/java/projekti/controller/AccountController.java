@@ -20,6 +20,9 @@ public class AccountController {
     private AccountService accountService;
 
     @Autowired
+    private FollowService followService;
+
+    @Autowired
     private PostService postService;
 
     @GetMapping("/profile/")
@@ -35,12 +38,13 @@ public class AccountController {
 
     @GetMapping("/profile/{user}")
     private String userPage(Model model, @PathVariable String user) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Account current = accountService.getCurrentUser();
         Account acc = accountService.getAccount(user);
         List<Post> post = postService.getPosts(acc);
-        model.addAttribute("current", auth.getName());
+        model.addAttribute("current", current.getUsername());
         model.addAttribute("posts", post);
         model.addAttribute("user", acc);
+        model.addAttribute("following", followService.doesUserFollow(current, acc));
         return "profile";
     }
 

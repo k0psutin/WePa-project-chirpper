@@ -150,7 +150,7 @@
                           >
                           <span
                             class="text float-right"
-                            th:text="${comment.date} + ' ' + ${comment.time}"
+                            th:text="${#dates.format(comment.dateTime, 'dd-MM-yyyy HH:mm')}"
                           >
                             11:54</span
                           >

@@ -1,8 +1,6 @@
 package projekti.service;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
+import java.time.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,10 +26,7 @@ public class CommentService {
                 Post post = postRepository.getOne(id);
 
                 cmt.setContent(comment);
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
-                DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-                cmt.setTime(LocalTime.now().format(formatter));
-                cmt.setDate(LocalDate.now().format(formatter2));
+                cmt.setDateTime(LocalDateTime.now());
                 cmt.setUser(user);
                 cmt.setPost(post);
                 postCommentRepository.save(cmt);

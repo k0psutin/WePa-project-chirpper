@@ -20,6 +20,12 @@ public class PostController {
     @Autowired
     private AccountService accountService;
 
+    /*
+     * Luo uus Post olio getcommentilla?
+     * 
+     * @ModelAttribute private Post getComment() { return Pageable jne? }
+     */
+
     @PostMapping("/profile/{username}/post")
     public String newPost(Model model, @PathVariable String username, @RequestParam String content) {
         postService.createPost(username, content);

@@ -1,8 +1,9 @@
 package projekti.model;
 
-import javax.persistence.Entity;
 import lombok.*;
 import javax.persistence.*;
+import javax.validation.constraints.*;
+
 import org.springframework.data.jpa.domain.AbstractPersistable;
 
 @Data
@@ -12,9 +13,16 @@ import org.springframework.data.jpa.domain.AbstractPersistable;
 public class Account extends AbstractPersistable<Long> {
 
     @Column(unique = true)
+    @Size(min = 3, max = 11)
     private String username;
+
+    @Size(min = 3, max = 11)
     private String firstName;
+
+    @Size(min = 3, max = 11)
     private String lastName;
+
+    @Size(min = 5)
     private String password;
 
     private Long profilePicId;

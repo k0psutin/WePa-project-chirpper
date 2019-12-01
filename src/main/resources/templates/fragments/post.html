@@ -55,7 +55,7 @@
                                 >
                                 <span
                                   class="text float-right"
-                                  th:text="${post.date} + ' ' + ${post.time}"
+                                  th:text="${#temporals.format(post.dateTime, 'dd.MM.yyyy')} + ' ' + ${#temporals.format(post.dateTime, 'HH:mm')}"  
                                 >
                                   11:54</span
                                 >
@@ -108,7 +108,7 @@
                                     >
                                     <span
                                       class="text float-right"
-                                      th:text="${comment.date} + ' ' + ${comment.time}"
+                                      th:text="${#temporals.format(post.dateTime, 'dd.MM.yyyy')} + ' ' + ${#temporals.format(post.dateTime, 'HH:mm')}"
                                     >
                                       11:54</span
                                     >

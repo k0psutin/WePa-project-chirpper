@@ -29,6 +29,7 @@ public class AccountService {
     @Transactional
     public void saveAccount(Account acc) {
         try {
+            System.out.println("tallennetaan");
             accountRepository.save(acc);
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -47,16 +48,13 @@ public class AccountService {
     }
 
     @Transactional
-    public void createAccount(String username, String password, String firstName, String lastName) {
+    public void createAccount(Account account) {
         try {
             BCryptPasswordEncoder pswEncoder = new BCryptPasswordEncoder();
-            String psw = pswEncoder.encode(password);
-            Account account = new Account();
-            account.setUsername(username);
-            account.setFirstName(firstName);
-            account.setLastName(lastName);
+            String psw = pswEncoder.encode(account.getPassword());
             account.setPassword(psw);
             accountRepository.save(account);
+            account.setProfilePicId(null);
         } catch (Exception e) {
             System.out.println(e.getStackTrace());
             System.out.println(e.getMessage());

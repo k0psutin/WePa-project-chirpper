@@ -1,7 +1,6 @@
 package projekti.service;
 
 import java.time.*;
-import java.time.format.DateTimeFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,14 +26,10 @@ public class PostService {
         if (!acc.getUsername().equals(username) | username.length() == 0 | content.length() == 0) {
             return;
         }
-        System.out.println(LocalDateTime.now());
         Post post = new Post();
         post.setAccount(acc);
         post.setContent(content);
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
-        DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-        post.setTime(LocalTime.now().format(formatter));
-        post.setDate(LocalDate.now().format(formatter2));
+        post.setDateTime(LocalDateTime.now());
         postRepository.save(post);
     }
 
@@ -59,6 +54,6 @@ public class PostService {
     }
 
     public List<Post> getPosts(Account account) {
-        return postRepository.findAllByAccountOrderByDateDescTimeDesc(account);
+        return postRepository.findAllByAccountOrderByDateTimeDesc(account);
     }
 }

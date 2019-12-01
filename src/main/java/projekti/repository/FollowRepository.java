@@ -9,7 +9,7 @@ public interface FollowRepository extends JpaRepository<Follow, Long> {
 
     List<Follow> findAllByUser(Account user);
 
-    List<Follow> findAllByUserOrderByDate(Account user);
+    List<Follow> findAllByUserOrderByDateTime(Account user);
 
     List<Follow> findByFollowing(Account following);
 }
