@@ -13,7 +13,7 @@ public class ChirpperApplication {
 
     @PostConstruct
     public void started() {
-        TimeZone.setDefault(TimeZone.getTimeZone("Finland/Helsinki"));
+        TimeZone.setDefault(TimeZone.getTimeZone("GMT+3"));
     }
 
     public static void main(String[] args) {
