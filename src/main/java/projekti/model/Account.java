@@ -22,7 +22,7 @@ public class Account extends AbstractPersistable<Long> {
     @Size(min = 3, max = 11)
     private String lastName;
 
-    @Size(min = 5, max = 20)
+    @Size(min = 5)
     private String password;
 
     private Long profilePicId;
