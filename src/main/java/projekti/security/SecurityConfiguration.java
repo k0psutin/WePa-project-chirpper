@@ -26,7 +26,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
         http.authorizeRequests().antMatchers(staticResources).permitAll().anyRequest().authenticated()
                 .antMatchers("/profile").hasAnyAuthority("USER").anyRequest().authenticated();
-        http.formLogin().loginPage("/login").successForwardUrl("/profile").failureUrl("/login-error").and().logout()
+        http.formLogin().loginPage("/login").successForwardUrl("/profile/").failureUrl("/login-error").and().logout()
                 .logoutSuccessUrl("/logout-success").permitAll();
     }
 
