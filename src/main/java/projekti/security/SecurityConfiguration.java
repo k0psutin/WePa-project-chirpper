@@ -22,7 +22,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
         http.headers().frameOptions().sameOrigin();
 
-        String[] staticResources = { "/h2-console", "/h2-console/**", "/login/**", "/img/**" };
+        String[] staticResources = { "/h2-console", "/h2-console/**", "/login/**", "/img/**", "/login-error" };
 
         http.authorizeRequests().antMatchers(staticResources).permitAll().anyRequest().authenticated()
                 .antMatchers("/profile").hasAnyAuthority("USER").anyRequest().authenticated();
