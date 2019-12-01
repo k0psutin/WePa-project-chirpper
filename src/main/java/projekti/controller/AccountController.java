@@ -44,6 +44,7 @@ public class AccountController {
         model.addAttribute("current", current.getUsername());
         model.addAttribute("posts", post);
         model.addAttribute("user", acc);
+        model.addAttribute("blocked", followService.isUserBlocked(current, acc));
         model.addAttribute("following", followService.doesUserFollow(current, acc));
         return "profile";
     }

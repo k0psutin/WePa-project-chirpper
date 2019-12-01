@@ -51,11 +51,10 @@ public class FollowController {
         return "redirect:/profile/{user}";
     }
 
-    @PostMapping("/profile/follow/{follower}")
-    public String blockUser(RedirectAttributes redirectAttributes, @PathVariable String username,
-            @PathVariable String follower) {
-        followService.blockFollower(follower);
-        redirectAttributes.addAttribute("user", username);
-        return "redirect:/profile/{user}";
+    @GetMapping("/profile/follow/remove/{follow}")
+    public String blockUser(@PathVariable String follow) {
+        System.out.println("Stop following: " + follow);
+        followService.blockFollower(follow);
+        return "redirect:/profile/follows";
     }
 }

@@ -49,6 +49,10 @@ public class PhotoService {
             System.out.println("Ei lisätä");
             return false;
         }
+        
+        if(story.length() == 0 | story.length() < 3 | story.length() > 120) {
+            return false;
+        }
 
         Photo photo = new Photo();
         photo.setStory(story);

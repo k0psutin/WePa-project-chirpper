@@ -12,7 +12,7 @@
                 >
                 <img
                     src="../public/img/cartoon-bird-small.png"
-                    alt=""
+                    alt="bird"
                     th:src="@{../img/cartoon-bird-small.png}"
                     />
                 <a class="navbar-brand" th:href="@{/profile/feed}">Chirpper</a>
@@ -66,12 +66,13 @@
         <div th:fragment="avatar(user)">
             <!-- Profile picture start -->
             <div th:if="${user} != null">
-                <div class="card border-light">
+                <div class="card border-light text-center">
                     <span th:if="${user.profilePicId} == null"
                           ><img
                             class="card-img-top"
                             src="../public/img/cartoon-bird-hi.png"
                             th:src="@{/img/cartoon-bird-hi.png}"
+                            style="height: 15vh; width: auto; "
                             alt="avatar"
                             /></span>
                     <span th:unless="${user.profilePicId} == null"
@@ -221,18 +222,11 @@
                                         comment
                                     </p>
                                     <!-- Comments end -->
-
-
                                 </div>
-
                             </div>
-
-
-
                         </div>
-
                         <!-- Make a comment start -->
-                        <div th:if="${show} == true" class="card-footer bg-white">
+                        <div th:if="${show} == true and ${blocked} == false" class="card-footer bg-white">
                             <span class="text text-muted">Add a tweet</span>
                             <div class="form-group">
                                 <form
@@ -248,7 +242,7 @@
                                 </form>
                             </div>
                         </div> 
-                        <div th:if="${show} == false" class="card-footer bg-white">
+                        <div th:if="${show} == false and ${blocked} == false" class="card-footer bg-white">
                             <span class="text text-muted">Add a tweet</span>
                             <div class="form-group">
                                 <form
@@ -256,11 +250,12 @@
                                     method="post"
                                     >
                                     <div class="input-group mb-3">
-                                        <input type="text" name="comment" id="comment" class="form-control" placeholder="Your tweetback..." aria-label="Recipient's username" aria-describedby="basic-addon2">
+                                        <input type="text" name="comment" class="form-control" placeholder="Your tweetback..." aria-describedby="commentHelp">
                                             <div class="input-group-append">
                                                 <button class="btn btn-danger" type="submit">Tweet</button>
                                             </div>
                                     </div>
+                                    <small id="commentHelp" class="form-text text-muted">Min 3, max 120 chars. <span></span></small>
                                 </form>
                             </div>
                         </div>

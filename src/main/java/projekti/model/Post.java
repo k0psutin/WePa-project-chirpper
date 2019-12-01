@@ -18,7 +18,7 @@ public class Post extends AbstractPersistable<Long> {
     @JoinColumn(name = "account_id")
     private Account account;
 
-    @Size(min = 3, max = 50)
+    @Size(min = 3, max = 120)
     private String content;
 
     private LocalDateTime dateTime;

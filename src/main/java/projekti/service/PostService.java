@@ -20,17 +20,18 @@ public class PostService {
     private AccountService accountService;
 
     @Transactional
-    public void createPost(String username, String content) {
+    public Boolean createPost(String username, String content) {
         Account acc = accountService.getCurrentUser();
 
-        if (!acc.getUsername().equals(username) | username.length() == 0 | content.length() == 0) {
-            return;
+        if (!acc.getUsername().equals(username) | username.length() == 0 | content.length() < 3 | content.length() > 120) {
+            return false;
         }
         Post post = new Post();
         post.setAccount(acc);
         post.setContent(content);
         post.setDateTime(LocalDateTime.now());
         postRepository.save(post);
+        return true;
     }
 
     public List<Post> getUserFeed(long id) {

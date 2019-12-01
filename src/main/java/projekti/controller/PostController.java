@@ -29,7 +29,7 @@ public class PostController {
     @PostMapping("/profile/{username}/post")
     public String newPost(Model model, @PathVariable String username, @RequestParam String content) {
         postService.createPost(username, content);
-        return "redirect:/profile/{username}";
+        return "redirect:/profile/";
     }
 
     @GetMapping("/profile/{username}/post/{id}/like")

@@ -19,7 +19,7 @@ public class CommentService {
 
         @Transactional
         public void createComment(Long id, String comment, Account user) {
-                if (comment.length() == 0) {
+                if (comment.length() == 0 | comment.length() < 3 | comment.length() > 120) {
                         return;
                 }
                 PostComment cmt = new PostComment();

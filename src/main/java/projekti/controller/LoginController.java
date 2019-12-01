@@ -49,8 +49,7 @@ public class LoginController {
         if (bindingResult.hasErrors()) {
             return "create";
         }
-        System.out.println("Tekee accon");
         accountService.createAccount(account);
-        return "redirect:/login";
+        return "redirect:/login/create-success";
     }
 }

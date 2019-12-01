@@ -31,7 +31,7 @@
           <div class="col-sm text-center">
             <h4>Following:</h4>
             <tr th:each="follow: ${following}">
-              <div class="col-sm">
+              <div class="col-sm" th:if="${follow.blocked} == false">
                 <h5>
                   <a
                     style="color:darkred;"
@@ -40,10 +40,10 @@
                     th:text="${follow.following.username}"
                     >Following users
                   </a>
-                  <small>following since: </small>
+                    <a class="btn btn-danger" th:href="@{/profile/follow/remove/{follow}(follow=${follow.following.username})}">remove</a>
                   <p>
                     <small
-                      ><span
+                      >Following since: <span
                       th:text="${#temporals.format(follow.dateTime, 'dd.MM.yyyy')} + ' ' + ${#temporals.format(follow.dateTime, 'HH:mm')}"
                       ></span
                     ></small>
@@ -58,7 +58,7 @@
           <div class="col-sm container-fluid text-center">
             <h4>Following you:</h4>
             <tr th:each="follower: ${follows}">
-              <div class="col-sm">
+              <div class="col-sm" th:if="${follower.blocked} == false">
                 <h5>
                   <a
                     style="color:darkred;"

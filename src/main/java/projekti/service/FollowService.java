@@ -21,22 +21,24 @@ public class FollowService {
 
     // Ohjaa tänne feedissä tykkäämiset, ettei palaa profiiliin..
     // Ja pitäisi varmaan tehdä JS:llä tykkäys?
-
+    public Boolean isUserBlocked(Account current, Account toFollow) {
+         Follow follow = followRepository.findByUserAndFollowing(current, toFollow);
+         if(follow == null) return false;
+         return follow.getBlocked();
+    }
+    
     public Boolean doesUserFollow(Account current, Account toFollow) {
-        return !followRepository.findByUserAndFollowing(current, toFollow).stream()
-                .anyMatch(follow -> follow.getUser().equals(current) && follow.getFollowing().equals(toFollow));
+        Follow follow = followRepository.findByUserAndFollowing(current, toFollow);
+        if (follow == null) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public void followUser(String user) {
         Account current = accountService.getCurrentUser();
         Account toFollow = accountService.getAccount(user);
-
-        // Boolean ifFollowerMatch = follows.stream()
-        // .anyMatch(follow -> follow.getUser().equals(toFollow) &&
-        // follow.getFollowing().equals(current));
-
-        // System.out.println("ifUserMatch: " + ifUserMatch + " ifFollowerMatch: " +
-        // ifFollowerMatch);
 
         // Jos käyttäjä seuraa jo henkilöä, ei tapahdu mitään..
         if (doesUserFollow(current, toFollow)) {
@@ -70,15 +72,28 @@ public class FollowService {
         Account current = accountService.getCurrentUser();
         Account followerUser = accountService.getAccount(follower);
 
-        List<Follow> follows = followRepository.findByUserAndFollowing(current, followerUser);
+        Follow stopFollowing = followRepository.findByUserAndFollowing(current, followerUser);
+        Follow removeFollower = followRepository.findByUserAndFollowing(followerUser, current);
+        if (stopFollowing != null) {
+            System.out.println(stopFollowing.getUser().getUsername() + " wants to unfollow " + stopFollowing.getFollowing().getUsername());
+            stopFollowing.setBlocked(true);
+        } else {
+            stopFollowing = new Follow();
+            stopFollowing.setFollowing(followerUser);
+            stopFollowing.setUser(current);
+            stopFollowing.setBlocked(true);
+            followRepository.save(stopFollowing);
+        }
 
-        Follow followerMatch = follows.stream()
-                .filter(follow -> follow.getUser().equals(followerUser) && follow.getFollowing().equals(current))
-                .findFirst().get();
-
-        if (!followerMatch.getBlocked()) {
-            followerMatch.setBlocked(true);
-            followRepository.save(followerMatch);
+        if (removeFollower != null) {
+            System.out.println(removeFollower.getFollowing().getUsername() + " will be removed from " + removeFollower.getUser().getUsername() + " flock.");
+            removeFollower.setBlocked(true);
+        } else {
+            removeFollower = new Follow();
+            removeFollower.setUser(followerUser);
+            removeFollower.setFollowing(current);
+            removeFollower.setBlocked(true);
+            followRepository.save(removeFollower);
         }
     }
 }
