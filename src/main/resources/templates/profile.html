@@ -24,12 +24,12 @@
     <title>Chirpper</title>
   </head>
   <body>
-      <div class="container" th:if="${user} != null">
-     <header th:replace="fragments/nav :: navbar">
+      <div th:if="${user} != null">
+     <header th:replace="fragments/layout :: navbar">
     </header>
         <div class="row">
             <div class="col-sm-3">
-              <div th:replace="fragments/avatar :: avatar(user=${user})"></div>
+              <div th:replace="fragments/layout :: avatar(user=${user})"></div>
             </div>
             <div class="col-sm">
           <br>
@@ -65,7 +65,7 @@
           </div>
           <!-- New post end -->
           <!-- Defaul message for no posts -->
-          <div  th:replace="fragments/post :: post(false)"></div>
+          <div  th:replace="fragments/layout :: post(false)"></div>
               </div>
             </div>
         </div>

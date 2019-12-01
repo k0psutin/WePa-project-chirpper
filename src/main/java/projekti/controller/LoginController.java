@@ -1,5 +1,6 @@
 package projekti.controller;
 
+import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,8 +17,14 @@ public class LoginController {
     private AccountService accountService;
 
     @GetMapping("/login/create")
-    public String accountCreation() {
+    public String accountCreation(@ModelAttribute Account account) {
         return "create";
+    }
+
+    @GetMapping("login/create-success") 
+    public String createSuccess(Model model) {
+        model.addAttribute("createSuccess", true);
+        return "login";
     }
 
     @GetMapping("/login")
@@ -38,9 +45,9 @@ public class LoginController {
     }
 
     @PostMapping("/login/create")
-    public String createNewAccount(@ModelAttribute Account account, BindingResult bindingResult) {
+    public String createNewAccount(@Valid @ModelAttribute Account account, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            return "redirect:/login/create";
+            return "create";
         }
         System.out.println("Tekee accon");
         accountService.createAccount(account);

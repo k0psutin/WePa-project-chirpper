@@ -20,13 +20,13 @@
     ></script>
   </head>
   <body>
-    <div class="container" th:if="${user} != null">
-      <header th:replace="fragments/nav :: navbar">
+    <div th:if="${user} != null">
+      <header th:replace="fragments/layout :: navbar">
         <title>Chirpper!</title>
       </header>
       <div class="row">
         <div class="col-sm-3">
-          <div th:replace="fragments/avatar :: avatar(user=${user})"></div>
+          <div th:replace="fragments/layout :: avatar(user=${user})"></div>
         </div>
           <div class="col-sm text-center">
             <h4>Following:</h4>
