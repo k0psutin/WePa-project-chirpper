@@ -11,7 +11,8 @@ import org.springframework.data.jpa.domain.AbstractPersistable;
 @NoArgsConstructor
 @Entity
 public class Account extends AbstractPersistable<Long> {
-
+    //Lisää custom virheviestit näihin
+    
     @Column(unique = true)
     @Size(min = 3, max = 11)
     private String username;

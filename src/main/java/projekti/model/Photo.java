@@ -30,6 +30,6 @@ public class Photo extends AbstractPersistable<Long> {
 
     @Lob
     @Basic(fetch = FetchType.LAZY)  
-    @Type(type = "org.hibernate.type.BinaryType")
+    @Type(type = "org.hibernate.type.BinaryType") //Pitää olla lokaaliin kommentoituna tai ei toimi...
     private byte[] content;
 }
