@@ -68,7 +68,8 @@
                             /></span>
                     <span th:unless="${user.profilePicId} == null"
                           ><img
-                            class="card-img-top"
+                            class="card-img-top rounded-circle"
+                            style="contain:none; object-fit:cover; width: 10vw; height: 20vh;"
                             th:src="@{/profile/img/{id}(id=${user.profilePicId})}"
                             alt="avatar"
                             /></span>

@@ -11,7 +11,6 @@ public class DefaultController {
 
     @GetMapping("/")
     public String afterLogin(RedirectAttributes redirectAttributes) {
-        System.out.println("DefaultController");
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String currentUser = auth.getName();
         redirectAttributes.addAttribute("username", currentUser);

@@ -100,7 +100,7 @@
                   </p>
                   <p class="card-text" th:text="${photo.story}">Text</p>
                   <p class="card-text">
-                   <div  th:if="${current} == false">
+                   <div  th:if="${current} == true">
                       <a
                       style="color:darkred;"
                       th:href="@{/profile/{username}/profile_pic/{id}(id=${photo.id}, username=${user.username})}"
