@@ -21,7 +21,7 @@
     <title>Chirpper</title>
   </head>
   <body>
-    <div>
+    <div th:if="${user} != null">
       <div th:replace="fragments/layout :: navbar"></div>
       <div class="row">
         <div class="col-sm-3">
@@ -31,13 +31,13 @@
           <div class="container">
             <br />
 
-            <h5 th:unless="${#strings.equals(current, user.username)}">
+            <h5 th:if="${current} == false">
                 <span th:unless="${photos.empty}"> 
                   <span th:text="${user.username}"></span>'s famous photos!</span>
              <span th:if="${photos.empty}"> 
                <span th:text="${user.username}"></span> has no photos...</span>
             </h5>
-            <div th:if="${#strings.equals(current, user.username)}">
+            <div th:if="${current} == true">
               <div  th:unless="${photos.empty}"><h5>
                   Upload some more pictures!
                 </h5>
@@ -46,7 +46,7 @@
             </div>
             <div
               class="form-group"
-              th:if="${#strings.equals(current, user.username)}"
+              th:if="${current}"
             >
               <form
                 th:action="@{/profile/{username}/album/(username=${user.username})}"
@@ -56,7 +56,7 @@
               >
                 <div class="form-group">
                   <small id="customFile" class="form-text text-muted text-left"
-                    >Please note that max filesize is 50kb.</small
+                    >Please note that the max filesize is 50kb.</small
                   >
                   <input
                     class="float-left"
@@ -100,7 +100,7 @@
                   </p>
                   <p class="card-text" th:text="${photo.story}">Text</p>
                   <p class="card-text">
-                   <div  th:if="${#strings.equals(current, user.username)}">
+                   <div  th:if="${current} == false">
                       <a
                       style="color:darkred;"
                       th:href="@{/profile/{username}/profile_pic/{id}(id=${photo.id}, username=${user.username})}"
@@ -150,7 +150,7 @@
                           >
                           <span
                             class="text float-right"
-                            th:text="${#dates.format(comment.dateTime, 'dd-MM-yyyy HH:mm')}"
+                            th:text="${#temporals.format(comment.dateTime, 'dd.MM.yyyy')} + ' ' + ${#temporals.format(comment.dateTime, 'HH:mm')}"  
                           >
                             11:54</span
                           >
@@ -167,8 +167,8 @@
                   </div>
                 </div>
                 <!-- Make a comment start -->
-
-                <div class="card-footer bg-white">
+                
+                <div th:unless="${current == false} and ${blocked == false} and ${follow == false}" class="card-footer bg-white">
                   <span class="text text-muted">Add a tweet</span>
                   <div class="form-group">
                     <form

@@ -40,7 +40,7 @@
                     th:text="${follow.following.username}"
                     >Following users
                   </a>
-                    <a class="btn btn-danger" th:href="@{/profile/follow/remove/{follow}(follow=${follow.following.username})}">remove</a>
+                    <a class="btn btn-danger" th:href="@{/profile/follow/block/{follow}(follow=${follow.following.username})}">block user</a>
                   <p>
                     <small
                       >Following since: <span

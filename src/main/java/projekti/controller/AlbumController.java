@@ -1,6 +1,7 @@
 package projekti.controller;
 
 import java.io.IOException;
+import java.util.List;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.stereotype.*;
 import org.springframework.ui.Model;
@@ -11,6 +12,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import projekti.service.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import projekti.model.Account;
+import projekti.model.Post;
 
 @Controller
 public class AlbumController {
@@ -23,14 +26,24 @@ public class AlbumController {
 
     @Autowired
     private PhotoCommentService photoCommentService;
+    
+    @Autowired
+    private FollowService followService;
 
     @GetMapping("/profile/{username}/album")
     public String photoAlbum(Model model, @PathVariable String username) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String current = auth.getName();
+        Account current = accountService.getCurrentUser();
+        Account user = accountService.getAccount(username);
+        
+        Boolean isFollowingUser = followService.doesUserFollow(current, user);
+        Boolean isCurrentUser = current.getUsername().equals(user.getUsername());
+        Boolean isBlocked = followService.isUserBlocked(current, user);
+        
+        model.addAttribute("blocked", isBlocked);
+        model.addAttribute("follow", isFollowingUser);
+        model.addAttribute("current", isCurrentUser);
         model.addAttribute("photos", photoService.getPhotos(username));
-        model.addAttribute("user", accountService.getAccount(username));
-        model.addAttribute("current", current);
+        model.addAttribute("user", user);
         return "album";
     }
 

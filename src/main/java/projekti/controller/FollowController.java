@@ -25,23 +25,22 @@ public class FollowController {
 
     @GetMapping("/profile/{username}")
     public String userFeed(Model model, @PathVariable String username) {
-        System.out.println("Get feed");
-        Account acc = accountService.getAccount(username);
+        Account user = accountService.getAccount(username);
         Account current = accountService.getCurrentUser();
-        List<Post> posts = postService.getUserFeed(acc.getId());
+        List<Post> posts = postService.getUserFeed(user.getId());
         if (posts.isEmpty()) {
-            posts = postService.getPosts(acc);
+            posts = postService.getPosts(user);
         }
         
-        Boolean following = followService.doesUserFollow(current, acc);
+        Boolean isFollowingUser = followService.doesUserFollow(current, user);
+        Boolean isCurrentUser = current.getUsername().equals(user.getUsername());
+        Boolean isBlocked = followService.isUserBlocked(current, user);
         
-        System.out.println(following);
-        
-        model.addAttribute("current", current.getUsername().equals(acc.getUsername()));
-        model.addAttribute("user", acc);
+        model.addAttribute("current", isCurrentUser);
+        model.addAttribute("user", user);
         model.addAttribute("posts", posts);
-        model.addAttribute("blocked", followService.isUserBlocked(current, acc));
-        model.addAttribute("follow", following);
+        model.addAttribute("blocked", isBlocked);
+        model.addAttribute("follow", isFollowingUser);
         return "feed";
     }
 
@@ -61,9 +60,8 @@ public class FollowController {
         return "redirect:/profile/{user}";
     }
 
-    @GetMapping("/profile/follow/remove/{follow}")
+    @GetMapping("/profile/follow/block/{follow}")
     public String blockUser(@PathVariable String follow) {
-        System.out.println("Stop following: " + follow);
         followService.blockFollower(follow);
         return "redirect:/profile/follows";
     }

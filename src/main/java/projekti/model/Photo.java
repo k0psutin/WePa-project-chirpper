@@ -29,7 +29,7 @@ public class Photo extends AbstractPersistable<Long> {
     private List<PhotoComment> comment = new ArrayList<>();
 
     @Lob
-    @Basic(fetch = FetchType.LAZY)
+    @Basic(fetch = FetchType.LAZY)  
     @Type(type = "org.hibernate.type.BinaryType")
     private byte[] content;
 }
