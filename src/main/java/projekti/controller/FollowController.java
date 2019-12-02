@@ -23,15 +23,25 @@ public class FollowController {
     @Autowired
     private PostService postService;
 
-    @GetMapping("/profile/feed")
-    public String userFeed(Model model) {
-        Account acc = accountService.getCurrentUser();
+    @GetMapping("/profile/{username}")
+    public String userFeed(Model model, @PathVariable String username) {
+        System.out.println("Get feed");
+        Account acc = accountService.getAccount(username);
+        Account current = accountService.getCurrentUser();
         List<Post> posts = postService.getUserFeed(acc.getId());
         if (posts.isEmpty()) {
             posts = postService.getPosts(acc);
         }
+        
+        Boolean following = followService.doesUserFollow(current, acc);
+        
+        System.out.println(following);
+        
+        model.addAttribute("current", current.getUsername().equals(acc.getUsername()));
         model.addAttribute("user", acc);
         model.addAttribute("posts", posts);
+        model.addAttribute("blocked", followService.isUserBlocked(current, acc));
+        model.addAttribute("follow", following);
         return "feed";
     }
 

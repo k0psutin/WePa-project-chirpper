@@ -25,11 +25,40 @@
       <header th:replace="fragments/layout :: navbar">
         <title>Chirpper!</title>
       </header>
-      <div>
+        <div class="row">
+        <div class="col-sm-3">
+                    <div th:replace="fragments/layout :: avatar(user=${user}, following=${following})"></div>
+                </div>
+      <div class="col-sm">
         <br />
         <h4 class="text-center">
-          <small></small>
-          <small>Chirps from the flock!</small>
+            <div>
+                Chirps from the flock!
+            </div>
+            <br>
+                <br>
+          <div class="card text-left" th:if="${current} == true">
+                                <div class="card-body">
+                                    <div class="form-group">
+                                        <form th:action="@{/profile/{username}/post/(username=${user.username})}" class="form-container" method="post">
+                                            <div class="input-group mb-3">
+                                                <input
+                                                    type="text"
+                                                    class="form-control"
+                                                    name="content"
+                                                    id="chirp_content"
+                                                    placeholder="What's chirpin'?"
+                                                    aria-describedby="chirpHelp"
+                                                    />
+                                                <div class="input-group-append">
+                                                    <button class="btn btn-danger" type="submit">Chirp!</button>
+                                                </div>
+                                            </div>
+                                            <small id="chirpHelp" class="form-text text-muted">Min 3, max 120 chars. <span id="count_content"></span></small>
+                                    </div>
+                                    </form>
+                                </div>
+                            </div>
         </h4>
         <br />
         <div th:replace="fragments/layout :: post(true)"></div>
@@ -50,5 +79,16 @@
       integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
       crossorigin="anonymous"
     ></script>
+        <script  th:inline="javascript">
+                                var text_max = 120;
+                                $('#count_content').html(text_max + ' remaining');
+
+                                $('#chirp_content').keyup(function () {
+                                    var text_length = $('#chirp_content').val().length;
+                                    var text_remaining = text_max - text_length;
+
+                                    $('#count_content').html(text_remaining + ' remaining');
+                                });
+                            </script>
   </body>
 </html>

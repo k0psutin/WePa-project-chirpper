@@ -21,10 +21,9 @@
             src="https://kit.fontawesome.com/5b04f5dd6f.js"
             crossorigin="anonymous"
         ></script>
-        <title>Chirpper</title>
     </head>
     <body>
-        <div th:if="${user} != null">
+        <div>
             <header th:replace="fragments/layout :: navbar">
             </header>
             <div class="row">
@@ -33,10 +32,10 @@
                 </div>
                 <div class="col-sm">
                     <br>
-                        <h4 class="container text-center" th:unless="${#strings.equals(current, user.username)}">
+                        <h4 class="container text-center" th:if="${current} == true">
                             <span th:text="${user.username}"></span><small>'s wall of Chirps!</small>
                         </h4>
-                        <h4 class="container text-center" th:if="${#strings.equals(current, user.username)}">
+                        <h4 class="container text-center" th:if="${current} == false">
                             <small>Welcome back </small>
                             <span th:text="${user.username} + '!'"></span
                             ><small> Add a new chirp!</small>
@@ -68,10 +67,6 @@
                             <!-- New post end -->
                             <!-- Defaul message for no posts -->
                             <div  th:replace="fragments/layout :: post(false)"></div>
-                            </div>
-                            </div>
-                            </div>
-                            </div>
                             </div>
                             </div>
                             </div>

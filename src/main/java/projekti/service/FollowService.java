@@ -23,16 +23,21 @@ public class FollowService {
     // Ja pitäisi varmaan tehdä JS:llä tykkäys?
     public Boolean isUserBlocked(Account current, Account toFollow) {
          Follow follow = followRepository.findByUserAndFollowing(current, toFollow);
-         if(follow == null) return false;
+         if(follow == null) {
+             return false;
+         }
+         if(follow.getUser().getUsername().equals(follow.getFollowing().getUsername())) {
+             return false;
+         }
          return follow.getBlocked();
     }
     
     public Boolean doesUserFollow(Account current, Account toFollow) {
         Follow follow = followRepository.findByUserAndFollowing(current, toFollow);
         if (follow == null) {
-            return true;
-        } else {
             return false;
+        } else {
+            return true;
         }
     }
 
@@ -41,7 +46,7 @@ public class FollowService {
         Account toFollow = accountService.getAccount(user);
 
         // Jos käyttäjä seuraa jo henkilöä, ei tapahdu mitään..
-        if (doesUserFollow(current, toFollow)) {
+        if (!doesUserFollow(current, toFollow)) {
             Follow follow = new Follow();
             follow.setDateTime(LocalDateTime.now());
             follow.setFollowing(toFollow);
@@ -77,22 +82,26 @@ public class FollowService {
         if (stopFollowing != null) {
             System.out.println(stopFollowing.getUser().getUsername() + " wants to unfollow " + stopFollowing.getFollowing().getUsername());
             stopFollowing.setBlocked(true);
+            followRepository.save(stopFollowing);
         } else {
             stopFollowing = new Follow();
             stopFollowing.setFollowing(followerUser);
             stopFollowing.setUser(current);
             stopFollowing.setBlocked(true);
+            stopFollowing.setDateTime(LocalDateTime.now());
             followRepository.save(stopFollowing);
         }
 
         if (removeFollower != null) {
             System.out.println(removeFollower.getFollowing().getUsername() + " will be removed from " + removeFollower.getUser().getUsername() + " flock.");
             removeFollower.setBlocked(true);
+            followRepository.save(removeFollower);
         } else {
             removeFollower = new Follow();
             removeFollower.setUser(followerUser);
             removeFollower.setFollowing(current);
             removeFollower.setBlocked(true);
+            removeFollower.setDateTime(LocalDateTime.now());
             followRepository.save(removeFollower);
         }
     }
