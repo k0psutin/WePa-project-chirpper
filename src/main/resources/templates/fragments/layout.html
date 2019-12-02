@@ -80,7 +80,7 @@
                         Firstname Lastname
                     </span>
                     <span
-                        th:if="${current == false} and ${blocked == false} and ${following == false}"
+                        th:if="${current == false} and ${blocked == false} and ${follow == false}"
                         >
                         <a
                             th:href="@{/profile/{username}/follow(username=${user.username})}"
