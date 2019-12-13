@@ -7,12 +7,13 @@ import org.springframework.data.repository.query.Param;
 import projekti.model.*;
 
 import java.util.*;
+import org.springframework.data.jpa.repository.EntityGraph;
 
 public interface PostRepository extends JpaRepository<Post, Long> {
     List<Post> findAllByAccount(Account account);
 
     List<Post> findAllByAccountOrderByDateTimeDesc(Account account);
-
+    
     @Query(value = "SELECT * FROM POST "
             + "WHERE ACCOUNT_ID IN (SELECT Follow_user_id FROM FOLLOW WHERE User_id = :id AND Blocked = FALSE) "
             + "OR ACCOUNT_ID IN (SELECT user_id FROM FOLLOW WHERE User_id = :id) " + "ORDER BY DATE_TIME DESC "

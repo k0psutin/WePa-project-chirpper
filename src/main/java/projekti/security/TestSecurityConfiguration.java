@@ -11,15 +11,19 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 @EnableWebSecurity
-@Profile("production")
-public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+@Profile("test")
+public class TestSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private UserDetailsService userDetailsService;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        String[] staticResources = { "/login/**", "/img/**", "/login-error" };
+        // mahdollistetaan h2-konsolin käyttö
+        http.csrf().disable();
+        http.headers().frameOptions().sameOrigin();
+
+        String[] staticResources = { "/h2-console", "/h2-console/**", "/login/**", "/img/**", "/login-error" };
 
         http.authorizeRequests().antMatchers(staticResources).permitAll().anyRequest().authenticated()
                 .antMatchers("/profile").hasAnyAuthority("USER").anyRequest().authenticated();

@@ -26,9 +26,15 @@ public class Post extends AbstractPersistable<Long> {
     @ManyToMany
     private List<Account> likes = new ArrayList<>();
 
-    @OneToMany(mappedBy = "post")
+    @OneToMany(mappedBy = "post", cascade=CascadeType.ALL)
     private List<PostComment> comment = new ArrayList<>();
 
-    // Ehkä pagedlistholderia vois kutsua täällä vaihtamaan sivuja??
-    // Esim PagedListHolder<Post> getComments(int page) ?
+    public List<PostComment> getComment() {
+        this.comment.sort(Comparator.comparing(PostComment::getDateTime).reversed());
+        if (this.comment.size() > 10) {
+            return this.comment.subList(0, 10);
+        } else {
+            return this.comment;
+        }
+    }
 }

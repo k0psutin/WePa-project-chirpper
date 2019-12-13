@@ -12,7 +12,7 @@ import projekti.service.*;
 import java.util.*;
 
 @Controller
-public class FollowController {
+public class ProfileController {
 
     @Autowired
     private FollowService followService;
@@ -31,16 +31,18 @@ public class FollowController {
         if (posts.isEmpty()) {
             posts = postService.getPosts(user);
         }
+        if(posts.size() > 25) {
+            posts = posts.subList(0, 25);
+        }
         
-        Boolean isFollowingUser = followService.doesUserFollow(current, user);
-        Boolean isCurrentUser = current.getUsername().equals(user.getUsername());
-        Boolean isBlocked = followService.isUserBlocked(current, user);
+        Map<String, Boolean> checkList = followService.checkList(current, user);
         
-        model.addAttribute("current", isCurrentUser);
+        model.addAttribute("currentUsername", current.getUsername());
+        model.addAttribute("current", checkList.get("isCurrentUser"));
         model.addAttribute("user", user);
         model.addAttribute("posts", posts);
-        model.addAttribute("blocked", isBlocked);
-        model.addAttribute("follow", isFollowingUser);
+        model.addAttribute("blocked", checkList.get("isBlocked"));
+        model.addAttribute("follow", checkList.get("isFollowing"));
         return "feed";
     }
 

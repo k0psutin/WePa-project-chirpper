@@ -41,6 +41,10 @@ public class PostService {
     public Post getPostById(long id) {
         return postRepository.getOne(id);
     }
+    
+    public void deletePost(Post post) {
+        postRepository.delete(post);
+    }
 
     @Transactional
     public void likeAPost(Long id) {

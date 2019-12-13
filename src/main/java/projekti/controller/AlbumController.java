@@ -2,6 +2,7 @@ package projekti.controller;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.stereotype.*;
 import org.springframework.ui.Model;
@@ -13,6 +14,7 @@ import projekti.service.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import projekti.model.Account;
+import projekti.model.Photo;
 import projekti.model.Post;
 
 @Controller
@@ -35,16 +37,29 @@ public class AlbumController {
         Account current = accountService.getCurrentUser();
         Account user = accountService.getAccount(username);
         
-        Boolean isFollowingUser = followService.doesUserFollow(current, user);
-        Boolean isCurrentUser = current.getUsername().equals(user.getUsername());
-        Boolean isBlocked = followService.isUserBlocked(current, user);
-        
-        model.addAttribute("blocked", isBlocked);
-        model.addAttribute("follow", isFollowingUser);
-        model.addAttribute("current", isCurrentUser);
+        Map<String, Boolean> checkList = followService.checkList(current, user);
+        model.addAttribute("currentUsername", current.getUsername());
+        model.addAttribute("blocked", checkList.get("isBlocked"));
+        model.addAttribute("follow", checkList.get("isFollowingUser"));
+        model.addAttribute("current", checkList.get("isCurrentUser"));
         model.addAttribute("photos", photoService.getPhotos(username));
         model.addAttribute("user", user);
         return "album";
+    }
+    
+    @PostMapping("/profile/img/delete/{id}/")
+    public String removePhoto(RedirectAttributes redirectAttributes, @PathVariable long id) {
+        Photo photo = photoService.getPhoto(id);
+        Account acc = accountService.getCurrentUser();
+        if(photo.getAccount().equals(acc)) {
+            if(id == acc.getProfilePicId()) {
+                System.out.println("Poistetaan kuva joka on profiilikuvana");
+                accountService.changeAvatar(acc.getUsername(), null);
+            }
+            photoService.deletePhoto(photo);
+        }
+        redirectAttributes.addAttribute("username", acc.getUsername());
+        return "redirect:/profile/{username}/album";
     }
 
     @GetMapping("/profile/img/{id}/like/{username}")

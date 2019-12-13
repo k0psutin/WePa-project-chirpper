@@ -25,7 +25,7 @@ public class Photo extends AbstractPersistable<Long> {
     @Size(min = 3, max = 30)
     private String story;
 
-    @OneToMany(mappedBy = "photo")
+    @OneToMany(mappedBy = "photo", cascade=CascadeType.ALL)
     private List<PhotoComment> comment = new ArrayList<>();
 
     @Lob

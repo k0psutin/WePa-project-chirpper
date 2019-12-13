@@ -193,7 +193,15 @@
                       </div>
                     </form>
                   </div>
+                 
                 </div>
+                 <span th:if="${currentUsername} == ${photo.account.username}" class="text-center" style="color: darkred;">
+                                <div class="form-group">
+                                     <form th:action="@{/profile/img/delete/{id}/(id=${photo.id})}" method="post">
+                                        <button onclick="return confirm('Are you sure you want to delete this photo?');" style="color: darkred;" class="btn" type="submit">Delete photo!</button>
+                                     </form>
+                                </div>
+                            </span>
                 <!-- Make a comment end -->
               </div>
             </tr>

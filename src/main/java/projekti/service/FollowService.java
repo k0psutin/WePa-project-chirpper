@@ -19,19 +19,22 @@ public class FollowService {
     @Autowired
     private AccountService accountService;
 
-    // Ohjaa tänne feedissä tykkäämiset, ettei palaa profiiliin..
-    // Ja pitäisi varmaan tehdä JS:llä tykkäys?
-    public Boolean isUserBlocked(Account current, Account toFollow) {
-         Follow follow = followRepository.findByUserAndFollowing(current, toFollow);
-         if(follow == null) {
-             return false;
-         }
-         if(follow.getUser().getUsername().equals(follow.getFollowing().getUsername())) {
-             return false;
-         }
-         return follow.getBlocked();
+    public Map<String, Boolean> checkList(Account current, Account toFollow) {
+        Follow follow = followRepository.findByUserAndFollowing(current, toFollow);
+        Map<String, Boolean> checkList = new HashMap<>();
+
+        if (follow == null || follow.getUser().getUsername().equals(follow.getFollowing().getUsername())) {
+            checkList.put("isFollowing", Boolean.FALSE);
+            checkList.put("isBlocked", Boolean.FALSE);
+        } else {
+            checkList.put("isFollowing", Boolean.TRUE);
+            checkList.put("isBlocked", follow.getBlocked());
+        }
+        
+        checkList.put("isCurrentUser", current.getUsername().equals(toFollow.getUsername()));
+        return checkList;
     }
-    
+
     public Boolean doesUserFollow(Account current, Account toFollow) {
         Follow follow = followRepository.findByUserAndFollowing(current, toFollow);
         if (follow == null) {

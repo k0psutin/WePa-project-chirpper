@@ -48,11 +48,15 @@ public class PostController {
         commentService.createComment(id, comment, user);
         return "redirect:/profile/{username}";
     }
-
-    @PostMapping("/profile/feed/post/comment/{id}")
-    public String addFeedComment(Model model, @PathVariable Long id, @RequestParam String comment) {
-        Account user = accountService.getCurrentUser();
-        commentService.createComment(id, comment, user);
-        return "redirect:/profile/feed";
+    
+    @PostMapping("/profile/feed/delete/{id}")
+    public String removePost(RedirectAttributes redirectAttributes, @PathVariable long id) {
+        Post post = postService.getPostById(id);
+        Account acc = accountService.getCurrentUser();
+        if(post.getAccount().equals(acc)) {
+            postService.deletePost(post);
+        }
+        redirectAttributes.addAttribute("username", acc.getUsername());
+        return "redirect:/profile/{username}";
     }
 }

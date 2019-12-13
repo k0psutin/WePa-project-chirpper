@@ -37,6 +37,10 @@ public class PhotoService {
             photoRepository.save(photo);
         }
     }
+    
+    public void deletePhoto(Photo photo) {
+        photoRepository.delete(photo);
+    }
 
     // ei toimi herokussa, lisäsin Transactional jos toimis...
     @Transactional
