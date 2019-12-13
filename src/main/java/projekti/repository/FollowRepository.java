@@ -5,11 +5,11 @@ import org.springframework.data.jpa.repository.*;
 import java.util.*;
 
 public interface FollowRepository extends JpaRepository<Follow, Long> {
-    Follow findByUserAndFollowing(Account user, Account following);
+    Follow findByAccountAndFollow(Account account, Account following);
 
-    List<Follow> findAllByUser(Account user);
+    List<Follow> findAllByAccount(Account account);
 
-    List<Follow> findAllByUserOrderByDateTime(Account user);
+    List<Follow> findAllByAccountOrderByDateTime(Account account);
 
-    List<Follow> findByFollowing(Account following);
+    List<Follow> findByFollow(Account following);
 }

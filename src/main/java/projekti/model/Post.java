@@ -7,6 +7,8 @@ import lombok.*;
 
 import org.springframework.data.jpa.domain.AbstractPersistable;
 import javax.validation.constraints.*;
+import org.springframework.beans.support.MutableSortDefinition;
+import org.springframework.beans.support.PagedListHolder;
 
 @Data
 @NoArgsConstructor

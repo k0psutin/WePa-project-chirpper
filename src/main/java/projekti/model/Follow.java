@@ -13,12 +13,12 @@ import org.springframework.data.jpa.domain.AbstractPersistable;
 public class Follow extends AbstractPersistable<Long> {
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
-    private Account user;
+    @JoinColumn(name = "account_id")
+    private Account account;
 
     @ManyToOne
-    @JoinColumn(name = "follow_user_id")
-    private Account following;
+    @JoinColumn(name = "follow_id")
+    private Account follow;
 
     private Boolean blocked;
 

@@ -27,7 +27,6 @@ public class CommentService {
 
                 cmt.setContent(comment);
                 cmt.setDateTime(LocalDateTime.now());
-                System.out.println(LocalDateTime.now());
                 cmt.setUser(user);
                 cmt.setPost(post);
                 postCommentRepository.save(cmt);

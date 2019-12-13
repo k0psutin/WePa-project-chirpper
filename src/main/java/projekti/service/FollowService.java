@@ -20,10 +20,10 @@ public class FollowService {
     private AccountService accountService;
 
     public Map<String, Boolean> checkList(Account current, Account toFollow) {
-        Follow follow = followRepository.findByUserAndFollowing(current, toFollow);
+        Follow follow = followRepository.findByAccountAndFollow(current, toFollow);
         Map<String, Boolean> checkList = new HashMap<>();
 
-        if (follow == null || follow.getUser().getUsername().equals(follow.getFollowing().getUsername())) {
+        if (follow == null || follow.getAccount().getUsername().equals(follow.getFollow().getUsername())) {
             checkList.put("isFollowing", Boolean.FALSE);
             checkList.put("isBlocked", Boolean.FALSE);
         } else {
@@ -36,7 +36,7 @@ public class FollowService {
     }
 
     public Boolean doesUserFollow(Account current, Account toFollow) {
-        Follow follow = followRepository.findByUserAndFollowing(current, toFollow);
+        Follow follow = followRepository.findByAccountAndFollow(current, toFollow);
         if (follow == null) {
             return false;
         } else {
@@ -52,8 +52,8 @@ public class FollowService {
         if (!doesUserFollow(current, toFollow)) {
             Follow follow = new Follow();
             follow.setDateTime(LocalDateTime.now());
-            follow.setFollowing(toFollow);
-            follow.setUser(current);
+            follow.setFollow(toFollow);
+            follow.setAccount(current);
             follow.setBlocked(false);
 
             followRepository.save(follow);
@@ -65,44 +65,44 @@ public class FollowService {
     }
 
     public List<Follow> getFollowingUser(Account account) {
-        return followRepository.findByFollowing(account);
+        return followRepository.findByFollow(account);
     }
 
     public List<Follow> getFollowsByUser(Account account) {
-        return followRepository.findAllByUser(account);
+        return followRepository.findAllByAccount(account);
     }
 
     public List<Follow> getFollowByOrder() {
-        return followRepository.findAllByUserOrderByDateTime(accountService.getCurrentUser());
+        return followRepository.findAllByAccountOrderByDateTime(accountService.getCurrentUser());
     }
 
     public void blockFollower(String follower) {
         Account current = accountService.getCurrentUser();
         Account followerUser = accountService.getAccount(follower);
 
-        Follow stopFollowing = followRepository.findByUserAndFollowing(current, followerUser);
-        Follow removeFollower = followRepository.findByUserAndFollowing(followerUser, current);
+        Follow stopFollowing = followRepository.findByAccountAndFollow(current, followerUser);
+        Follow removeFollower = followRepository.findByAccountAndFollow(followerUser, current);
         if (stopFollowing != null) {
-            System.out.println(stopFollowing.getUser().getUsername() + " wants to unfollow " + stopFollowing.getFollowing().getUsername());
+            System.out.println(stopFollowing.getAccount().getUsername() + " wants to unfollow " + stopFollowing.getFollow().getUsername());
             stopFollowing.setBlocked(true);
             followRepository.save(stopFollowing);
         } else {
             stopFollowing = new Follow();
-            stopFollowing.setFollowing(followerUser);
-            stopFollowing.setUser(current);
+            stopFollowing.setFollow(followerUser);
+            stopFollowing.setAccount(current);
             stopFollowing.setBlocked(true);
             stopFollowing.setDateTime(LocalDateTime.now());
             followRepository.save(stopFollowing);
         }
 
         if (removeFollower != null) {
-            System.out.println(removeFollower.getFollowing().getUsername() + " will be removed from " + removeFollower.getUser().getUsername() + " flock.");
+            System.out.println(removeFollower.getAccount().getUsername() + " will be removed from " + removeFollower.getAccount().getUsername() + " flock.");
             removeFollower.setBlocked(true);
             followRepository.save(removeFollower);
         } else {
             removeFollower = new Follow();
-            removeFollower.setUser(followerUser);
-            removeFollower.setFollowing(current);
+            removeFollower.setAccount(followerUser);
+            removeFollower.setFollow(current);
             removeFollower.setBlocked(true);
             removeFollower.setDateTime(LocalDateTime.now());
             followRepository.save(removeFollower);

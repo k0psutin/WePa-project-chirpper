@@ -35,12 +35,12 @@
                 <h5>
                   <a
                     style="color:darkred;"
-                    th:href="@{/profile/{username}(username=${follow.following.username})}"
+                    th:href="@{/profile/{username}(username=${follow.follow.username})}"
                     class="text-center"
-                    th:text="${follow.following.username}"
+                    th:text="${follow.follow.username}"
                     >Following users
                   </a>
-                    <a class="btn btn-danger" th:href="@{/profile/follow/block/{follow}(follow=${follow.following.username})}">block user</a>
+                    <a class="btn btn-danger" th:href="@{/profile/follow/block/{follow}(follow=${follow.follow.username})}">block user</a>
                   <p>
                     <small
                       >Following since: <span
@@ -62,9 +62,9 @@
                 <h5>
                   <a
                     style="color:darkred;"
-                    th:href="@{/profile/{username}(username=${follower.user.username})}"
+                    th:href="@{/profile/{username}(username=${follower.account.username})}"
                     class="text-center"
-                    th:text="${follower.user.username}"
+                    th:text="${follower.account.username}"
                     >Users following you
                   </a>
                   <small>has been following you since: </small>

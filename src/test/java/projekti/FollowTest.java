@@ -67,7 +67,7 @@ public class FollowTest {
 
         Map<String, Object> f = res.getModelAndView().getModel();
         List<Follow> follows = (List<Follow>) f.get("following");
-        Assert.assertTrue("Can follow users", follows.get(0).getFollowing().getUsername().equals("Mulder83"));
+        Assert.assertTrue("Can follow users", follows.get(0).getFollow().getUsername().equals("Mulder83"));
     }
 
     @Test
