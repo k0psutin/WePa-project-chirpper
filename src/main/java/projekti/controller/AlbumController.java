@@ -28,7 +28,7 @@ public class AlbumController {
 
     @Autowired
     private PhotoCommentService photoCommentService;
-    
+
     @Autowired
     private FollowService followService;
 
@@ -36,7 +36,7 @@ public class AlbumController {
     public String photoAlbum(Model model, @PathVariable String username) {
         Account current = accountService.getCurrentUser();
         Account user = accountService.getAccount(username);
-        
+
         Map<String, Boolean> checkList = followService.checkList(current, user);
         model.addAttribute("currentUsername", current.getUsername());
         model.addAttribute("blocked", checkList.get("isBlocked"));
@@ -46,19 +46,25 @@ public class AlbumController {
         model.addAttribute("user", user);
         return "album";
     }
-    
+
     @PostMapping("/profile/img/delete/{id}/")
     public String removePhoto(RedirectAttributes redirectAttributes, @PathVariable long id) {
         Photo photo = photoService.getPhoto(id);
         Account acc = accountService.getCurrentUser();
-        if(photo.getAccount().equals(acc)) {
-            if(id == acc.getProfilePicId()) {
-                System.out.println("Poistetaan kuva joka on profiilikuvana");
-                accountService.changeAvatar(acc.getUsername(), null);
-            }
-            photoService.deletePhoto(photo);
-        }
         redirectAttributes.addAttribute("username", acc.getUsername());
+        if (photo == null) {
+            return "redirect:/profile/{username}/album";
+        }
+
+        if (photo.getAccount().equals(acc)) {
+            if (acc.getProfilePicId() != null) {
+                if (id == acc.getProfilePicId()) {
+                    accountService.changeAvatar(acc.getUsername(), null);
+                }
+            }
+            photoService.deletePhoto(id);
+        }
+
         return "redirect:/profile/{username}/album";
     }
 

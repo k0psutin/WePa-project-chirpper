@@ -38,8 +38,8 @@ public class PhotoService {
         }
     }
     
-    public void deletePhoto(Photo photo) {
-        photoRepository.delete(photo);
+    public void deletePhoto(long id) {
+        photoRepository.deleteById(id);
     }
 
     // ei toimi herokussa, lisäsin Transactional jos toimis...
