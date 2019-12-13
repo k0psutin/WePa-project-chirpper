@@ -23,7 +23,7 @@
   <body>
     <div th:if="${user} != null">
       <div th:replace="fragments/layout :: navbar"></div>
-      <div class="row">
+      <div class="row container-fluid">
         <div class="col-sm-3">
           <div th:replace="fragments/layout :: avatar(user=${user})"></div>
         </div>

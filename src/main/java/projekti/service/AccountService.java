@@ -10,6 +10,8 @@ import org.springframework.transaction.annotation.Transactional;
 import projekti.model.*;
 import projekti.repository.*;
 
+import java.util.*;
+
 @Service
 public class AccountService {
 
@@ -43,8 +45,8 @@ public class AccountService {
         return acc;
     }
 
-    public boolean userExists(String username) {
-        return (accountRepository.findByUsername(username) == null);
+    public List<Account> userExists(String search) {
+        return accountRepository.findAllByUsernameContaining(search);
     }
 
     @Transactional
