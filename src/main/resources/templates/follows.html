@@ -67,8 +67,10 @@
                     th:text="${follower.account.username}"
                     >Users following you
                   </a>
-                  <small>has been following you since: </small>
+                    <a class="btn btn-danger" th:href="@{/profile/follow/block/{follow}(follow=${follower.account.username})}">block user</a>
+                  
                   <p>
+                      <small>has been following you since: </small>
                     <small
                       ><span
                       th:text="${#temporals.format(follower.dateTime, 'dd.MM.yyyy')} + ' ' + ${#temporals.format(follower.dateTime, 'HH:mm')}"

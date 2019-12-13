@@ -16,7 +16,7 @@ import javax.validation.constraints.*;
 public class PhotoComment extends AbstractPersistable<Long> {
 
     @NotEmpty
-    @Size(min = 3, max = 50)
+    @Size(min = 3, max = 100)
     private String content;
 
     private LocalDateTime dateTime;

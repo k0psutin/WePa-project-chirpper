@@ -15,7 +15,8 @@ import org.springframework.data.jpa.domain.AbstractPersistable;
 @Entity
 public class PostComment extends AbstractPersistable<Long> {
 
-    @Size(min = 3, max = 50)
+    @NotEmpty
+    @Size(min = 3, max = 100)
     private String content;
 
     private LocalDateTime dateTime;

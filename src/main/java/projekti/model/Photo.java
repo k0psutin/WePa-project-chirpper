@@ -22,7 +22,7 @@ public class Photo extends AbstractPersistable<Long> {
     @JoinColumn(name = "account_id")
     private Account account;
 
-    @Size(min = 3, max = 30)
+    @Size(min = 3, max = 120)
     private String story;
 
     @OneToMany(mappedBy = "photo", cascade=CascadeType.ALL)
