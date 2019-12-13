@@ -74,8 +74,8 @@
                             /></span>
                     <span th:unless="${user.profilePicId} == null"
                           ><img
-                            class="card-img-top rounded-circle"
-                            style="contain:none; object-fit:cover; width: 20vw; height: auto; min-width: 20vw; min-height: 10vh; "
+                            class="card-img-thumbnail rounded-circle"
+                            style="contain:none; object-fit:cover; width: 20vh; height: 20vh;"
                             th:src="@{/profile/img/{id}(id=${user.profilePicId})}"
                             alt="avatar"
                             /></span>
@@ -140,7 +140,7 @@
                                     /></span>
                             <span th:unless="${post.account.profilePicId} == null and ${show == true}"
                                   ><img
-                                    class="card-img-thumbnail rounded-circle"
+                                    class="card-img-thumbnail rounded-circle float-left"
                                     style="contain:none; object-fit:cover; width: 5vh; height: 5vh;"
                                     th:src="@{/profile/img/{id}(id=${post.account.profilePicId})}"
                                     alt=""
