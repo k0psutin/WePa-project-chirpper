@@ -26,7 +26,7 @@ public class DevSecurityConfiguration extends WebSecurityConfigurerAdapter {
         String[] staticResources = { "/h2-console", "/h2-console/**", "/login/**", "/img/**", "/login-error" };
 
         http.authorizeRequests().antMatchers(staticResources).permitAll().anyRequest().authenticated()
-                .antMatchers("/profile").hasAnyAuthority("USER").anyRequest().authenticated();
+                .antMatchers("/profile").hasAnyAuthority("USER").anyRequest().authenticated().antMatchers("/feed").hasAnyAuthority("USER");
         http.formLogin().loginPage("/login").failureUrl("/login-error").and().logout()
                 .logoutSuccessUrl("/logout-success").permitAll();
     }
