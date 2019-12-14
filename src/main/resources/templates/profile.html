@@ -25,18 +25,43 @@
       <header th:replace="fragments/layout :: navbar">
         <title>Chirpper!</title>
       </header>
-        <div class="row container-fluid">
+        <div class="row  container-fluid">
+        <div class="col-sm-3">
+                    <div th:replace="fragments/layout :: avatar(user=${user})"></div>
+                </div>
       <div class="col-sm">
         <br />
         <h4 class="text-center">
             <div>
-                Chirps from the flock!
+                <span th:text="${user.username}">username </span><small>'s wall of Chirps!</small>
             </div>
             <br>
                 <br>
+          <div class="card text-left" th:if="${current} == true">
+                                <div class="card-body">
+                                    <div class="form-group">
+                                        <form th:action="@{/profile/{username}/post/(username=${user.username})}" class="form-container" method="post">
+                                            <div class="input-group mb-3">
+                                                <input
+                                                    type="text"
+                                                    class="form-control"
+                                                    name="content"
+                                                    id="chirp_content"
+                                                    placeholder="What's chirpin'?"
+                                                    aria-describedby="chirpHelp"
+                                                    />
+                                                <div class="input-group-append">
+                                                    <button class="btn btn-danger" type="submit">Chirp!</button>
+                                                </div>
+                                            </div>
+                                            <small id="chirpHelp" class="form-text text-muted">Min 3, max 120 chars. <span id="count_content"></span></small>
+                                    </div>
+                                    </form>
+                                </div>
+                            </div>
         </h4>
         <br />
-        <div th:replace="fragments/layout :: feed(true)"></div>
+        <div th:replace="fragments/layout :: post"></div>
       </div>
     </div>
     <script

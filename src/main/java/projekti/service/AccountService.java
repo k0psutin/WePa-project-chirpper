@@ -27,6 +27,10 @@ public class AccountService {
         String currentUser = auth.getName();
         return getAccount(currentUser);
     }
+    
+    public List<Account> getAllUsers() {
+        return accountRepository.findAll();
+    }
 
     @Transactional
     public void saveAccount(Account acc) {

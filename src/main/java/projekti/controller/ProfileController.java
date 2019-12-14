@@ -22,28 +22,43 @@ public class ProfileController {
 
     @Autowired
     private PostService postService;
-
-    @GetMapping("/profile/{username}")
-    public String userFeed(Model model, @PathVariable String username) {
-        Account user = accountService.getAccount(username);
+    
+    @GetMapping("/feed")
+    public String userFeed(Model model) {
         Account current = accountService.getCurrentUser();
-        List<Post> posts = postService.getUserFeed(user.getId());
+        List<Post> posts = postService.getUserFeed(current.getId());
         if (posts.isEmpty()) {
-            posts = postService.getPosts(user);
+            posts = postService.getPosts(current);
         }
         if(posts.size() > 25) {
             posts = posts.subList(0, 25);
         }
         
-        Map<String, Boolean> checkList = followService.checkList(current, user);
+        model.addAttribute("currentUsername", current.getUsername());
+        model.addAttribute("posts", posts);
+        model.addAttribute("user", current);
+        return "feed";
+    }
+
+    @GetMapping("/profile/{username}")
+    public String userProfile(Model model, @PathVariable String username) {
+        Account user = accountService.getAccount(username);
+        Account current = accountService.getCurrentUser();
+        List<Post> posts = postService.getPosts(user);
+      
+        if(posts.size() > 25) {
+            posts = posts.subList(0, 25);
+        }
         
+        Map<String, Boolean> checkList = followService.checkList(current, user);
+        System.out.println(checkList);
         model.addAttribute("currentUsername", current.getUsername());
         model.addAttribute("current", checkList.get("isCurrentUser"));
         model.addAttribute("user", user);
         model.addAttribute("posts", posts);
         model.addAttribute("blocked", checkList.get("isBlocked"));
         model.addAttribute("follow", checkList.get("isFollowing"));
-        return "feed";
+        return "profile";
     }
 
     @GetMapping("/profile/follows")

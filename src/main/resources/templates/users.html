@@ -21,7 +21,7 @@
     <title>Chirpper</title>
   </head>
   <body>
-    <div th:if="${user} != null">
+    <div>
       <header th:replace="fragments/layout :: navbar">
         <title>Chirpper!</title>
       </header>
@@ -30,13 +30,13 @@
         <br />
         <h4 class="text-center">
             <div>
-                Chirps from the flock!
+                All the Chirppers!
             </div>
             <br>
                 <br>
         </h4>
         <br />
-        <div th:replace="fragments/layout :: feed(true)"></div>
+        <div th:replace="fragments/layout :: users"></div>
       </div>
     </div>
     <script

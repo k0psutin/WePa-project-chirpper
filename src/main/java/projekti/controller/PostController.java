@@ -21,12 +21,6 @@ public class PostController {
     @Autowired
     private AccountService accountService;
 
-    /*
-     * Luo uus Post olio getcommentilla?
-     * 
-     * @ModelAttribute private Post getComment() { return Pageable jne? }
-     */
-
     @PostMapping("/profile/{username}/post")
     public String newPost(Model model, @PathVariable String username, @RequestParam String content) {
         postService.createPost(username, content);
@@ -40,7 +34,13 @@ public class PostController {
         model.addAttribute("user", accountService.getAccount(username));
         return "redirect:/profile/{username}";
     }
-
+    
+     @GetMapping("/feed/post/{id}/like")
+    public String likeFeedPost(Model model, @PathVariable Long id) {
+        postService.likeAPost(id);
+        return "redirect:/feed";
+    }
+    
     @PostMapping("/profile/{username}/post/{id}/comment")
     public String addComment(Model model, @PathVariable String username, @PathVariable Long id,
             @RequestParam String comment) {
@@ -49,7 +49,15 @@ public class PostController {
         return "redirect:/profile/{username}";
     }
     
-    @PostMapping("/profile/feed/delete/{id}")
+     @PostMapping("/feed/post/{id}/comment")
+     public String addFeedComment(Model model, @PathVariable Long id,
+            @RequestParam String comment) {
+        Account user = accountService.getCurrentUser();
+        commentService.createComment(id, comment, user);
+        return "redirect:/feed";
+    }
+    
+    @PostMapping("/feed/post/{id}/delete")
     public String removePost(RedirectAttributes redirectAttributes, @PathVariable long id) {
         Post post = postService.getPostById(id);
         Account acc = accountService.getCurrentUser();
@@ -57,6 +65,6 @@ public class PostController {
             postService.deletePost(post);
         }
         redirectAttributes.addAttribute("username", acc.getUsername());
-        return "redirect:/profile/{username}";
+        return "redirect:/feed";
     }
 }

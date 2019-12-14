@@ -6,6 +6,34 @@
         <title>Layout</title>
     </head>
     <body>
+        <div th:fragment="users">
+             <div class="text-center" th:each="user : ${users}">
+              <span th:if="${user.profilePicId} == null"
+                          ><img
+                            class="card-img-top"
+                            th:src="@{/img/cartoon-bird-hi.png}"
+                            style="height: 5vh; width: auto; "
+                            alt="avatar"
+                            /></span>
+                    <span th:unless="${user.profilePicId} == null"
+                          ><img
+                            class="card-img-thumbnail rounded-circle"
+                            style="contain:none; object-fit:cover; width: 5vh; height: 5vh;"
+                            th:src="@{/profile/img/{id}(id=${user.profilePicId})}"
+                            alt="avatar"
+                            /></span>     
+                 <span
+                                class="text"
+                                th:text="${user.firstName} + ' ' + ${user.lastName}"
+                                >Username</span
+                            >
+                            <small
+                                ><a style="color: darkred;" th:href="@{/profile/{username}(username=${user.username})}"
+                                    ><span th:text="'@' + ${user.username}">username</span></a
+                                ></small
+                            >
+            </div>
+        </div>
         <div th:fragment="navbar">
             <nav
                 class="navbar navbar-expand-sm navbar-dark"
@@ -29,13 +57,18 @@
                 </button>
                 <div class="collapse navbar-collapse" id="collapsibleNavId">
                     <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                         <li sec:authorize="hasAuthority('USER')" class="nav-item">
+                            <a class="nav-link" th:href="@{/feed}">Feed</a>
+                        </li>
                         <li sec:authorize="hasAuthority('USER')" class="nav-item">
                             <a class="nav-link" th:href="@{/}">Profile</a>
                         </li>
                         <li sec:authorize="hasAuthority('USER')" class="nav-item">
                             <a class="nav-link" th:href="@{/profile/follows}">Flock</a>
                         </li>
-                      
+                          <li sec:authorize="hasAuthority('USER')" class="nav-item">
+                            <a class="nav-link" th:href="@{/users}">All Chirppers!</a>
+                        </li>
                             <li sec:authorize="hasAuthority('USER')" class="nav-item">
                             <a class="nav-link" href="#" onclick="document.getElementById('logout-form').submit();"> Logout </a>
 
@@ -43,6 +76,7 @@
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                             </form>
                         </li>
+                      
                     </ul>
                     <form  sec:authorize="hasAuthority('USER')"  th:action="@{/profile/search/}" method="post" class="form-inline my-2 my-lg-0">
                         <input
@@ -107,7 +141,7 @@
             </div>
         </div>  
 
-        <div th:fragment="post(show)">
+        <div th:fragment="post">
             <div th:if="${posts.empty}">
                 <div>
                     <br />
@@ -128,25 +162,6 @@
                     <div class="card">
                        
                         <div class="card-header">
-                            <span th:if="${post.account.profilePicId} == null and ${show == true}"
-                                  ><img
-                                    class="card-img-thumbnail"
-                                    style="width: 5vh; height: auto;"
-                                    src="../public/img/cartoon-bird-hi.png"
-                                    th:src="@{/img/cartoon-bird-hi.png}"
-                                    alt=""
-                                    width="5%"
-                                    height="5%"
-                                    /></span>
-                            <span th:unless="${post.account.profilePicId} == null and ${show == true}"
-                                  ><img
-                                    class="card-img-thumbnail rounded-circle float-left"
-                                    style="contain:none; object-fit:cover; width: 5vh; height: 5vh;"
-                                    th:src="@{/profile/img/{id}(id=${post.account.profilePicId})}"
-                                    alt=""
-                                    width="10%"
-                                    height="10%"
-                                    /></span>
                             <span
                                 class="text"
                                 th:text="${post.account.firstName} + ' ' + ${post.account.lastName}"
@@ -228,7 +243,7 @@
                             </div>
                         </div>
                         <!-- Make a comment start -->
-                        <div th:if="${show} == true and ${blocked} == false and ${follow} == true" class="card-footer bg-white">
+                        <div th:if="${blocked} == false and ${follow} == true" class="card-footer bg-white">
                             <span th:if="${blocked} == false" class="text text-muted">Add a tweet</span>
                             <div class="form-group">
                                 <form
@@ -244,7 +259,7 @@
                                 </form>
                             </div>
                         </div> 
-                        <div th:if="${show} == true and ${blocked} == false and ${follow} == false and ${current} == true" class="card-footer bg-white">
+                        <div th:if="${blocked} == false and ${follow} == false and ${current} == true" class="card-footer bg-white">
                             <div th:if="${blocked} == false" class="text text-muted">Add a tweet</div>
                             <div class="form-group">
                                 <form
@@ -262,6 +277,156 @@
                             <div th:if="${currentUsername} == ${post.account.username}" class="text-center" style="color: darkred;">
                                 <div class="form-group">
                                      <form th:action="@{/profile/feed/delete/{id}(id=${post.id})}" method="post">
+                                        <button onclick="return confirm('Delete Chirp?');" style="color: darkred;" class="btn" type="submit">Remove Chirp!</button>
+                                     </form>
+                                </div>
+                            </div>
+                        </div> 
+                        <!-- Make a comment end -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div th:fragment="feed(show)">
+            <div th:if="${posts.empty}">
+                <div>
+                    <br />
+                    <div class="card">
+                        <div class="card-body">
+                            No chirps yet, i hope we hear you singing soon!
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Default message end -->
+            <!-- Post start -->
+
+            <div th:unless="${posts.empty}">
+                <div th:each="post: ${posts}">
+                    <br />
+                    
+                    <div class="card">
+                       
+                        <div class="card-header">
+                            <span th:if="${post.account.profilePicId} == null and ${show == true}"
+                                  ><img
+                                    class="card-img-thumbnail"
+                                    style="width: 5vh; height: auto;"
+                                    src="../public/img/cartoon-bird-hi.png"
+                                    th:src="@{/img/cartoon-bird-hi.png}"
+                                    alt=""
+                                    width="5%"
+                                    height="5%"
+                                    /></span>
+                            <span th:unless="${post.account.profilePicId} == null and ${show == true}"
+                                  ><img
+                                    class="card-img-thumbnail rounded-circle float-left"
+                                    style="contain:none; object-fit:cover; width: 5vh; height: 5vh;"
+                                    th:src="@{/profile/img/{id}(id=${post.account.profilePicId})}"
+                                    alt=""
+                                    width="10%"
+                                    height="10%"
+                                    /></span>
+                            <span
+                                class="text"
+                                th:text="${post.account.firstName} + ' ' + ${post.account.lastName}"
+                                >Username</span
+                            >
+                            <small
+                                ><a style="color: darkred;" th:href="@{/profile/{username}(username=${post.account.username})}"
+                                    ><span th:text="'@' + ${post.account.username}">username</span></a
+                                ></small
+                            >
+                            
+                            <span
+                                class="text float-right"
+                                th:text="${#temporals.format(post.dateTime, 'dd.MM.yyyy')} + ' ' + ${#temporals.format(post.dateTime, 'HH:mm')}"  
+                                >
+                                11:54</span
+                            >
+                            
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text" th:text="${post.content}">
+                                Enter some text here
+                            </p>
+                            <a
+                                th:href="@{/feed/post/{id}/like(id=${post.id})}"
+                                ><i class="fas fa-heart" style="color:red"> </i></a
+                            ><span th:text="' ' + ${#lists.size(post.likes)}">0</span>
+                        </div>
+
+                        <!-- No comments default start -->
+                        <div
+                            class="card-footer bg-white"
+                            th:if="${post.comment.empty}"
+                            >
+                            No tweetback yet!
+                        </div>
+                        <!-- No comments default end -->
+                        <!-- Comments start -->
+                        <div
+                            class="card-footer bg-white"
+                            th:unless="${post.comment.empty}"
+                            >
+                            <div th:each="comment : ${post.comment}">
+                                <div>
+                                    <div>
+                                        <span th:if="${comment.user.profilePicId} == null"
+                                              ><img
+                                                class="card-img-thumbnail float-left"
+                                                style="contain:none; object-fit:cover; width: 5vh; height: 5vh;"
+                                                src="../public/img/cartoon-bird-hi.png"
+                                                th:src="@{/img/cartoon-bird-hi.png}"
+                                                width="10%"
+
+                                                /></span>
+                                        <span th:unless="${comment.user.profilePicId} == null"
+                                              ><img
+                                                class="card-img-thumbnail rounded-circle float-left"
+                                                style="contain:none; object-fit:cover; width: 5vh; height: 5vh;"
+                                                th:src="@{/profile/img/{id}(id=${comment.user.profilePicId})}"
+                                                alt="avatar"
+                                                /></span>
+                                        <small
+                                            ><a style="color:darkred;" class="nav-link active" th:href="@{/profile/{username}(username=${comment.user.username})}" th:text="'@' + ${comment.user.username}"
+                                            >username</a
+                                            >
+                                            <span
+                                                class="text float-right"
+                                                th:text="${#temporals.format(comment.dateTime, 'dd.MM.yyyy')} + ' ' + ${#temporals.format(comment.dateTime, 'HH:mm')}"
+                                                >
+                                                11:54</span
+                                            >
+                                        </small>
+                                    </div>
+                                    <div class="container" th:text="${comment.content}">
+                                        comment
+                                    </div>
+                                    <!-- Comments end -->
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Make a comment start -->
+                        <div class="card-footer bg-white">
+                            <div th:if="${blocked} == false" class="text text-muted">Add a tweet</div>
+                            <div class="form-group">
+                                <form
+                                    th:action="@{/feed/post/{id}/comment(id=${post.id})}"
+                                    method="post"
+                                    >
+                                    <div class="input-group mb-3">
+                                        <input type="text" name="comment" id="comment" class="form-control" placeholder="Your tweetback..." aria-label="Recipient's username" aria-describedby="basic-addon2" />
+                                            <div class="input-group-append">
+                                                <button class="btn btn-danger" type="submit">Tweet</button>
+                                            </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div th:if="${currentUsername} == ${post.account.username}" class="text-center" style="color: darkred;">
+                                <div class="form-group">
+                                     <form th:action="@{/feed/post/{id}/delete(id=${post.id})}" method="post">
                                         <button onclick="return confirm('Delete Chirp?');" style="color: darkred;" class="btn" type="submit">Remove Chirp!</button>
                                      </form>
                                 </div>

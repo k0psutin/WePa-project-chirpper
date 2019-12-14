@@ -9,6 +9,7 @@ import projekti.model.*;
 import projekti.service.*;
 
 import java.util.*;
+import org.springframework.ui.Model;
 
 @Controller
 public class AccountController {
@@ -33,4 +34,11 @@ public class AccountController {
         redirectAttributes.addAttribute("user", accs.get(0).getUsername());
         return "redirect:/profile/{user}";
     }
+    
+   @GetMapping("/users")
+   public String allUsers(Model model) {
+       List<Account> users = accountService.getAllUsers();
+       model.addAttribute("users", users);
+       return "users";
+   }
 }
