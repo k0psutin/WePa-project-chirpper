@@ -276,7 +276,7 @@
                             </div>
                             <div th:if="${currentUsername} == ${post.account.username}" class="text-center" style="color: darkred;">
                                 <div class="form-group">
-                                     <form th:action="@{/profile/feed/delete/{id}(id=${post.id})}" method="post">
+                                     <form th:action="@{/profile/{username}/post/{id}/delete(username=${user.username},id=${post.id})}" method="post">
                                         <button onclick="return confirm('Delete Chirp?');" style="color: darkred;" class="btn" type="submit">Remove Chirp!</button>
                                      </form>
                                 </div>

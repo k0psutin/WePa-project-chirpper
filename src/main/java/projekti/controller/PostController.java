@@ -58,7 +58,7 @@ public class PostController {
     }
     
     @PostMapping("/feed/post/{id}/delete")
-    public String removePost(RedirectAttributes redirectAttributes, @PathVariable long id) {
+    public String removeFeedPost(RedirectAttributes redirectAttributes, @PathVariable long id) {
         Post post = postService.getPostById(id);
         Account acc = accountService.getCurrentUser();
         if(post.getAccount().equals(acc)) {
@@ -66,5 +66,16 @@ public class PostController {
         }
         redirectAttributes.addAttribute("username", acc.getUsername());
         return "redirect:/feed";
+    }
+    
+    @PostMapping("/profile/{username}/post/{id}/delete")
+    public String removePost(RedirectAttributes redirectAttributes, @PathVariable long id) {
+        Post post = postService.getPostById(id);
+        Account acc = accountService.getCurrentUser();
+        if(post.getAccount().equals(acc)) {
+            postService.deletePost(post);
+        }
+        redirectAttributes.addAttribute("username", acc.getUsername());
+        return "redirect:/profile/{username}";
     }
 }
