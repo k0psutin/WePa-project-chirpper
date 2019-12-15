@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 
 import projekti.model.*;
@@ -46,7 +47,12 @@ public class LoginController {
 
     @PostMapping("/login/create")
     public String createNewAccount(@Valid @ModelAttribute Account account, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
+        if (bindingResult.hasErrors() ) {
+            return "create";
+        }
+        
+        if(accountService.getAccount(account.getUsername().toLowerCase()) != null) {
+            bindingResult.rejectValue("username", "error.account", "Account named " + account.getUsername() + " already exists.");
             return "create";
         }
         accountService.createAccount(account);

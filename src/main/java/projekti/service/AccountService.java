@@ -19,7 +19,7 @@ public class AccountService {
     private AccountRepository accountRepository;
 
     public Account getAccount(String username) {
-        return accountRepository.findByUsername(username);
+        return accountRepository.findByUsernameIgnoreCase(username);
     }
 
     public Account getCurrentUser() {
