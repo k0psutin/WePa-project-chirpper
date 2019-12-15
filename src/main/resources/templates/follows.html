@@ -55,7 +55,7 @@
 
           <!-- Following users list END -->
           <!-- Users following you list START -->
-          <div class="col-sm container-fluid text-center">
+          <div class="col-sm container text-center">
             <h4>Following you:</h4>
             <tr th:each="follower: ${follows}">
               <div class="col-sm" th:if="${follower.blocked} == false">

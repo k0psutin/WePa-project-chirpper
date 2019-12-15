@@ -1,7 +1,6 @@
 package projekti.service;
 
 import java.time.*;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,18 +36,13 @@ public class FollowService {
 
     public Boolean doesUserFollow(Account current, Account toFollow) {
         Follow follow = followRepository.findByAccountAndFollow(current, toFollow);
-        if (follow == null) {
-            return false;
-        } else {
-            return true;
-        }
+        return !(follow == null);
     }
 
     public void followUser(String user) {
         Account current = accountService.getCurrentUser();
         Account toFollow = accountService.getAccount(user);
 
-        // Jos käyttäjä seuraa jo henkilöä, ei tapahdu mitään..
         if (!doesUserFollow(current, toFollow)) {
             Follow follow = new Follow();
             follow.setDateTime(LocalDateTime.now());
@@ -58,8 +52,7 @@ public class FollowService {
 
             followRepository.save(follow);
         } else {
-            // Tähän joku errori että voi näyttää sivuilla?
-            System.out.println("Ei lisätä, löytyy jo");
+            //System.out.println("Ei lisätä, löytyy jo");
         }
 
     }
@@ -83,7 +76,7 @@ public class FollowService {
         Follow stopFollowing = followRepository.findByAccountAndFollow(current, followerUser);
         Follow removeFollower = followRepository.findByAccountAndFollow(followerUser, current);
         if (stopFollowing != null) {
-            System.out.println(stopFollowing.getAccount().getUsername() + " wants to unfollow " + stopFollowing.getFollow().getUsername());
+            //System.out.println(stopFollowing.getAccount().getUsername() + " wants to unfollow " + stopFollowing.getFollow().getUsername());
             stopFollowing.setBlocked(true);
             followRepository.save(stopFollowing);
         } else {
@@ -96,7 +89,7 @@ public class FollowService {
         }
 
         if (removeFollower != null) {
-            System.out.println(removeFollower.getAccount().getUsername() + " will be removed from " + removeFollower.getAccount().getUsername() + " flock.");
+            //System.out.println(removeFollower.getAccount().getUsername() + " will be removed from " + removeFollower.getAccount().getUsername() + " flock.");
             removeFollower.setBlocked(true);
             followRepository.save(removeFollower);
         } else {

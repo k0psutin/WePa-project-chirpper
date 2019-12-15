@@ -22,7 +22,7 @@ public class ProfileController {
 
     @Autowired
     private PostService postService;
-    
+ 
     @GetMapping("/feed")
     public String userFeed(Model model) {
         Account current = accountService.getCurrentUser();
@@ -39,7 +39,7 @@ public class ProfileController {
         model.addAttribute("user", current);
         return "feed";
     }
-
+    
     @GetMapping("/profile/{username}")
     public String userProfile(Model model, @PathVariable String username) {
         Account user = accountService.getAccount(username);
@@ -51,7 +51,7 @@ public class ProfileController {
         }
         
         Map<String, Boolean> checkList = followService.checkList(current, user);
-        System.out.println(checkList);
+        //System.out.println(checkList);
         model.addAttribute("currentUsername", current.getUsername());
         model.addAttribute("current", checkList.get("isCurrentUser"));
         model.addAttribute("user", user);
@@ -60,7 +60,7 @@ public class ProfileController {
         model.addAttribute("follow", checkList.get("isFollowing"));
         return "profile";
     }
-
+    
     @GetMapping("/profile/follows")
     public String followList(Model model) {
         Account acc = accountService.getCurrentUser();
