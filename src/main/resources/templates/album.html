@@ -168,8 +168,7 @@
                   </div>
                 </div>
                 <!-- Make a comment start -->
-                
-                <div th:unless="${current == false} and ${blocked == false} and ${follow == false}" class="card-footer bg-white">
+                <div th:if="${blocked} == false and ${follow} == true or ${current}" class="card-footer bg-white">
                   <span class="text text-muted">Add a tweet</span>
                   <div class="form-group">
                     <form

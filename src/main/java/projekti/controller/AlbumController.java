@@ -38,10 +38,11 @@ public class AlbumController {
         Account user = accountService.getAccount(username);
 
         Map<String, Boolean> checkList = followService.checkList(current, user);
+        
         model.addAttribute("currentUsername", current.getUsername());
-        model.addAttribute("blocked", checkList.get("isBlocked"));
-        model.addAttribute("follow", checkList.get("isFollowingUser"));
         model.addAttribute("current", checkList.get("isCurrentUser"));
+        model.addAttribute("blocked", checkList.get("isBlocked"));
+        model.addAttribute("follow", checkList.get("isFollowing"));
         model.addAttribute("photos", photoService.getPhotos(username));
         model.addAttribute("user", user);
         return "album";

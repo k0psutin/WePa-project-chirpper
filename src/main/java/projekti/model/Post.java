@@ -20,7 +20,7 @@ public class Post extends AbstractPersistable<Long> {
     @JoinColumn(name = "account_id")
     private Account account;
 
-    @Size(min = 3, max = 120)
+    @Size(min = 3, max = 120,message="Chirp should be between 3 and 120 chars.")
     private String content;
 
     private LocalDateTime dateTime;

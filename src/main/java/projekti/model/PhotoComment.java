@@ -16,7 +16,7 @@ import javax.validation.constraints.*;
 public class PhotoComment extends AbstractPersistable<Long> {
 
     @NotEmpty
-    @Size(min = 3, max = 120)
+    @Size(min = 3, max = 120,message="Tweetback should be between 3 and 120 chars.")
     private String content;
 
     private LocalDateTime dateTime;
